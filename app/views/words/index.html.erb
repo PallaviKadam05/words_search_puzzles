@@ -1,0 +1,286 @@
+
+  
+    <div class="wrap">
+      <h1 class="logo">Word search game</h1>
+
+     
+<%= form_tag('/word') do %>
+
+<%= select_tag :category, options_for_select(Word.select(:category).pluck(:category)) , id: "category-select" , include_blank: true %>
+ 
+  <% end %>
+      <div id="countdown2"> </div>
+      <section id="ws-area"></section>
+       <ul class="ws-words"></ul>
+       <div class="container">
+   
+</div>
+    </div>
+   
+    <script type="text/javascript">
+      // var gameAreaEl = document.getElementById('ws-area');
+      // var gameobj = gameAreaEl.wordSearch();
+       //var wordd=document.getElementById("ws-words")
+       //alert(wordd);
+   
+ $(function() {
+    $("#category-select").on("change", function() {
+      var select_val = $(this).val();
+      console.log(select_val);
+      if (select_val) {
+       // alert(select_val == select_val);
+       $(this).addClass('hide'); 
+         //alert(gameobj);
+      // Put words into `.ws-words`
+        $.ajax({
+        url:"words/fetch_words",
+        type:'GET',
+        dataType: "json",
+        data: {"select_val" : select_val } , //select_val,
+        success: function(data){
+         // alert("success")
+          gon.words=data
+          //alert(gon.words)
+          
+         // alert("array")
+         
+        // alert(data);
+          alert("Game is start");
+          console.log(data)
+          var input = {
+              year: 0,
+              month: 0,
+              day: 0,
+              hours: 0,
+              minutes: 0,
+              seconds: 0
+          };
+          
+
+         var timestamp = new Date(input.year, input.month, input.day,
+         input.hours, input.minutes, input.seconds);
+
+         var interval = 1;
+
+        tm=setInterval(function () {
+        timestamp = new Date(timestamp.getTime() + interval * 1000);
+        document.getElementById('countdown2').innerHTML =  timestamp.getMinutes() + ':' + timestamp.getSeconds() ;
+         }, Math.abs(interval) * 1000);
+        console.log(timestamp)
+
+
+
+
+        // tm=setInterval(function () {
+        // timestamp = new Date(timestamp.getTime() + interval * 1000);
+        // document.getElementById('countdown2').innerHTML = 'Contdown Start :' + timestamp.getDay() + 'd:' + timestamp.getHours() + 'h:' + timestamp.getMinutes() + 'm:' + timestamp.getSeconds() + 's';
+        //  }, Math.abs(interval) * 1000);
+        // console.log(timestamp)
+
+        //console.log(input.seconds)
+
+        
+
+// var endDate = new Date("02:00").getTime();
+
+// var timer = setInterval(function() {
+
+//     let now = new Date().getTime();
+//     let t = endDate - now;
+    
+//     if (t >= 0) {
+    
+//        // let days = Math.floor(t / (1000 * 60 * 60 * 24));
+//         //let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//         let mins = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+//         let secs = Math.floor((t % (1000 * 60)) / 1000);
+    
+//        // document.getElementById("timer-days").innerHTML = days +
+//         //"<span class='label'>DAY(S)</span>";
+    
+//         // document.getElementById("timer-hours").innerHTML = ("0"+hours).slice(-2) +
+//         // "<span class='label'>HR(S)</span>";
+    
+//         document.getElementById("timer-mins").innerHTML = ("0"+mins).slice(-2) +
+//         "<span class='label'>MIN(S)</span>";
+    
+//         document.getElementById("timer-secs").innerHTML = ("0"+secs).slice(-2) +
+//         "<span class='label'>SEC(S)</span>";
+    
+//     } else {
+
+//         document.getElementById("timer").innerHTML = "The countdown is over!";
+    
+//     }
+    
+// }, 1000);
+
+
+
+          //alert(gon.watch.words)
+          //console.log(data);
+          //console.log(gon.words)
+
+          var gameAreaEl = document.getElementById('ws-area');
+          var gameobj = gameAreaEl.wordSearch();
+
+        //Put words into `.ws-words`
+          var words = gameobj.settings.wordsList,
+          wordsWrap = document.querySelector('.ws-words');
+          for (i in words) {
+            var liEl = document.createElement('li');
+            liEl.setAttribute('class', 'ws-word');
+            liEl.innerText = words[i];
+            wordsWrap.appendChild(liEl);
+
+
+          }
+
+        },
+        error:function(){
+          alert("error")
+        }
+      });
+
+
+       // alert("<%=@words%>")
+      //alert(solved)
+      
+      
+     } else {
+        $(".ws-word").empty();
+      }
+
+    });
+  });
+
+    //alert(words)
+    
+    </script>
+  
+<style type="text/css">
+  /* CSS reset */
+
+body, h1 {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-transform: uppercase;
+}
+
+body {
+  color: #333;
+}
+
+/* Common */
+
+.fix {
+  *zoom: 1;
+}
+
+.fix:after {
+  display: table;
+  clear: both;
+  content: '';
+}
+
+/* Home */
+
+.wrap {
+  width: 960px;
+  margin: 0 auto;
+  padding: 40px 0;
+  text-align: center;
+  position:relative;
+}
+
+.logo, #gameArea {
+  margin-bottom: 40px;
+}
+
+.ws-area, .ws-words {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.ws-words {
+  margin-left: 20px;
+  text-align: left;
+}
+
+.ws-word {
+  margin-bottom: 4px;
+}
+
+.ws-words ::first-letter{
+  text-transform : capitalize;
+}
+
+/* Wordsearch */
+
+.ws-area {
+  background: #fafafa;
+  display: inline-block;
+  padding: 20px;
+  border-radius: 10px;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.ws-row {
+  line-height: 0;
+}
+
+.ws-col {
+  cursor: pointer;
+}
+
+.ws-col.ws-selected {
+  background: #FF0000;
+}
+
+.ws-found {
+  background: yellow;
+}
+
+.ws-game-over-outer {
+  background: rgba(0, 0, 0, 0.85);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.ws-game-over-inner {
+  width:100%;
+  height:100%;
+  padding:0;
+  margin:0;
+  display:table;
+}
+
+.ws-game-over {
+  display:table-cell;
+  vertical-align:middle;
+}
+
+.ws-game-over h2 {
+  color:#FFFFFF;
+  font-size:2em;
+  text-transform:uppercase;
+  padding:0;
+  margin:0 0 9px 0;
+}
+
+.ws-game-over p {
+  color:#FFFFFF;
+  font-size:1em;
+  padding:0;
+  margin:0;
+}
+</style>
