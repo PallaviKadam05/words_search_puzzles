@@ -26,21 +26,12 @@ class HistoriesController < ApplicationController
   # POST /histories
   # POST /histories.json
   def create
-
+    # @id = params[:id] 
+    #binding.pry
+     @id = session[:id] 
     @history = History.create!(history_params)
     render json: @history
-    # binding.pry
-    # @history = History.create(history_params)
-
-    # respond_to do |format|
-    #   if @history.save
-    #     format.html { redirect_to @history, notice: 'History was successfully created.' }
-    #     format.json { render :show, status: :created, location: @history }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @history.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    
   end
 
 
@@ -84,7 +75,7 @@ class HistoriesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def history_params
       #params.require(:history).permit(:score, :word_id, :user_id)
-       params.permit(:score, :player_time).merge(user_id: current_user.id)
+       params.permit(:score, :player_time).merge(word_id: @id, user_id: current_user.id)
 
 
     end

@@ -21,6 +21,7 @@
 
     //Words solved.
     this.solved = 0;
+    this.wrong_word = 5;
 
     // Default settings
     var default_settings = {
@@ -32,7 +33,7 @@
     }
     
     this.settings = Object.merge(settings, default_settings);
-
+    
     // Check the words' length if it is overflow the grid
     if (this.parseWords(this.settings.gridSize)) {
       // Add words into the matrix data
@@ -62,8 +63,6 @@
    */
   WordSearch.prototype.parseWords = function(maxSize) {
     var itWorked = true;
-// alert("hiii")
-// alert(this.settings.words.length)
     for (var i = 0; i < this.settings.words.length; i++) {
       // Convert all the letters to upper case      
 	  this.settings.wordsList[i] =  this.settings.words[i].trim();
@@ -328,13 +327,17 @@
    * @param {Array} selected
    */
   WordSearch.prototype.lookup = function(selected) {
-    var wrong_word=0
+    //var wrong_word = 0;
+
     var words = [''];
 	var wa=0
     for (var i = 0; i < selected.length; i++) {
       words[0] += selected[i].letter;
+
     }
     words.push(words[0].split('').reverse().join(''));
+   // alert("selected word" + words[0])
+    //alert(this.settings.words.indexOf(words[0]))
     //alert(words[1]);
     if (this.settings.words.indexOf(words[0]) > -1 ||
         this.settings.words.indexOf(words[1]) > -1) {
@@ -356,21 +359,12 @@
 			wordListItems[i].innerHTML = "<del>"+wordListItems[i].innerHTML+"</del>";
 			//Increment solved words.
 			this.solved++;
-     //wrong_word++;
+     
 			
 		  }
-		  
+		    }
+        } 
 
-	  
-        }
-        
-
-        //else{
-        // 	alert("wrong"+ i)
-        //wrong_word++;
-         //}
-
-      }
       alert(this.solved);
       //Game over?
       if(this.solved == this.settings.words.length){
@@ -380,12 +374,91 @@
         this.gameOver();
       }
       
+      
     }
     else
-    {
-    	 
-    	alert("Wrong Word Search "+ wrong_word)
+    { 
+     
+        this.wrong_word --
+    	alert("You have only "+ this.wrong_word + " attepts")
+       
+       if(this.wrong_word == 0)
+       {
+        
+        var player_time = document.getElementById("countdown2").innerHTML;
+     console.log(player_time)
+     
+    $.ajax({
+    url: "/histories", 
+    data: { "score": this.solved , "player_time": player_time}, 
+    dataType: "json",
+    type: 'POST',
+    success: function (data) {
+        console.log(data);
+     },
+        error:function(){
 
+          alert("error");
+          
+        }
+      });
+    var overlay = document.createElement("div");
+    overlay.setAttribute("id", "ws-game-over-outer");
+    overlay.setAttribute("class", "ws-game-over-outer");
+    this.wrapEl.parentNode.appendChild(overlay);
+
+
+    //Create overlay content.
+    var overlay = document.getElementById("ws-game-over-outer");
+      overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
+                            "<div class='ws-game-over' id='ws-game-over'>"+
+                              "<h2>Opps....!  </h2>"+ this.settings.words.length+
+                              "<p>You've Not found all of the words!</p>"+"<button class='primary' id='refresh'>OK</button>"+
+                            "</div>"+
+                          "</div>";
+       }
+
+
+    //    else{
+    
+    //         if (timeLeft == -1) {
+    //       clearTimeout(timerId);
+
+    //     var player_time = document.getElementById("countdown2").innerHTML;
+    //  console.log(player_time)
+     
+    // $.ajax({
+    // url: "/histories", 
+    // data: { "score": this.solved , "player_time": player_time}, 
+    // dataType: "json",
+    // type: 'POST',
+    // success: function (data) {
+    //     console.log(data);
+    //  },
+    //     error:function(){
+
+    //       alert("error");
+          
+    //     }
+    //   });
+    // var overlay = document.createElement("div");
+    // overlay.setAttribute("id", "ws-game-over-outer");
+    // overlay.setAttribute("class", "ws-game-over-outer");
+    // this.wrapEl.parentNode.appendChild(overlay);
+
+
+    // //Create overlay content.
+    // var overlay = document.getElementById("ws-game-over-outer");
+    //   overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
+    //                         "<div class='ws-game-over' id='ws-game-over'>"+
+    //                           "<h2>Opps Time Up....!  </h2>"+ this.settings.words.length+
+    //                           "<p>You've Not found all of the words!</p>"+
+    //                         "</div>"+
+    //                       "</div>";
+    //       //doSomething();
+    //       }
+
+    //    }
 
     }
   }
@@ -396,6 +469,7 @@
 WordSearch.prototype.gameOver = function() {
 
     window.clearInterval(tm);
+    //window.clearInterval(timeR)
      var score=this.settings.words.length
      //alert("Score new" +s);
      var player_time = document.getElementById("countdown2").innerHTML;
@@ -411,23 +485,7 @@ WordSearch.prototype.gameOver = function() {
     type: 'POST',
     success: function (data) {
         console.log(data);
-    
-
-    // var overlay = document.createElement("div");
-    // overlay.setAttribute("id", "ws-game-over-outer");
-    // overlay.setAttribute("class", "ws-game-over-outer");
-    // this.wrapEl.parentNode.appendChild(overlay);
-
-
-    // //Create overlay content.
-    // var overlay = document.getElementById("ws-game-over-outer");
-    //   overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
-    //                         "<div class='ws-game-over' id='ws-game-over'>"+
-    //                           "<h2>Congratulations!</h2>"+ this.settings.words.length+
-    //                           "<p>You've found all of the words!</p>"+
-    //                         "</div>"+
-    //                       "</div>";
-        },
+    },
         error:function(){
 
           alert("error");
@@ -446,8 +504,8 @@ WordSearch.prototype.gameOver = function() {
     var overlay = document.getElementById("ws-game-over-outer");
       overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
                             "<div class='ws-game-over' id='ws-game-over'>"+
-                              "<h2>Congratulations!</h2>"+ this.settings.words.length+
-                              "<p>You've found all of the words!</p>"+
+                              "<h2>Congratulations!</h2>"+
+                              "<p>You've found all of the words!</p>"+"<button class='primary' id='refresh'>OK</button>"+
                             "</div>"+
                           "</div>";
 
