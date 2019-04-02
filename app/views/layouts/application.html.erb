@@ -5,13 +5,61 @@
     <%= include_gon(:init => true) %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <style type="text/css">
+      .navbar-brand{ 
+        /*background: image-url('/word-search-logo.png') center / contain no-repeat;*/
+  width: 200px;
+}
+ .navbar-brand-img{ 
+        /*background: image-url('/word-search-logo.png') center / contain no-repeat;*/
+  width: 200px;
+}
+
+    </style>
   </head>
 
   <body>
-    <nav>
+    <nav class="navbar navbar-inverse navbar-static-top example6">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar6">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <%= link_to image_tag("word-search-logo.png", alt: "logo",width: "50px"), '/', class: 'navbar-brand-img' %>
+        <a class="text-info solid h3 blockquote primary" style="font-size:2vw">Word Search Game
+           
+        </a>
+     </div>
+      <div id="navbar6" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <!-- <li><%= link_to "Edit profile", edit_user_registration_path %></li>
+          <li></li> -->
+ <% if user_signed_in? %>
+          <li><%= link_to "Scores", histories_path %></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Signed in as <%= current_user.email %> <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><%= link_to "Edit profile", edit_user_registration_path %></li>
+              <li> <%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+            </ul>
+          </li>
+        </ul>
+        <% else %>
+         <li><%= link_to "Sign up", new_user_registration_path %> </li>or
+        <li><%= link_to "sign in", new_user_session_path %></li>
+  <% end %>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+  </nav>
+  <!-- <nav > 
     <% if user_signed_in? %>
   Signed in as <%= current_user.email %>. Not you?
   <%= link_to "Edit profile", edit_user_registration_path %>
@@ -22,11 +70,14 @@
   <%= link_to "Sign up", new_user_registration_path %> or
   <%= link_to "sign in", new_user_session_path %>
 <% end %>
-</nav>
+</nav> -->
 <% flash.each do |name, msg| %>
   <%= content_tag :div, msg, id: "flash_#{name}" %>
 <% end %>
 
     <%= yield %>
+    
+    <div style="background-color:black;text-align:center;padding:10px;margin-top:500px; color: white;">© copyright Word Search Game</div>
+
   </body>
 </html>

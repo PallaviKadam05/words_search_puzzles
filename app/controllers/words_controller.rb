@@ -37,12 +37,15 @@ class WordsController < ApplicationController
     #word_id=Word
    # @id = Word.where(category: params[:select_val])
 
-
-
-    render json: gon.words
-     @data = Word.where(category: params[:select_val]).first
+    @data = Word.where(category: params[:select_val]).first
     #@id=@data.id
     session[:id]=@data.id
+
+    render json: gon.words
+    
+    #binding.pry
+    
+
     #redirect_to new_history_path(id: @id)
   end
 

@@ -1,69 +1,85 @@
 
   
     <div class="wrap">
-      <h1 class="logo">Word search game</h1>
-
-     
+     <h1 class="logo ">Word search game</h1>
+<div id="error">
+     </div>
+     <div id="first">
 <%= form_tag('/word') do %>
-<p id="msg"> To Start Game Please Select Category which you want....!</p><br /> 
+<!-- <p id="msg"> To Start Game Please Select Category which you want....!</p><br />  -->
+<div class="alert alert-danger" id="msg">
+    <strong>To Start Game Please Select Category which you want....!
+    </strong> 
+  </div><br /><br /><br /><br/>
+<div data-toggle="modal" data-target="#myModal" id="demo" class="select center-on-page">
 <%= select_tag :category, options_for_select(Word.select(:category).pluck(:category)) , id: "category-select" , include_blank: true %>
- 
+ </div>
   <% end %>
-   <!-- <div id="some_div"></div> -->
-
-      <div id="countdown2"> </div>
-      <section id="ws-area"></section>
-       <ul class="ws-words"></ul>
-       <div class="container">
-   
 </div>
-    </div>
+</div>
+ 
+<div class="wrap">
+   <div class="alert alert-danger hide" id="timer"></div>
+
+   <div id="some_div"></div>
+      <!-- <div id="timer">2:00</div> -->
+      <div id="countdown2"> </div>
+     <p id="p1" class="hide"></p>
+      <section id="ws-area"  ></section>
+       <button onclick="start_game()" class="hide" id="start">Lets Start Game</button>
+
+       <ul class="ws-words h3 card card-image" ></ul> <!-- style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);"
+      -->
    
+  </div>
+
     <script type="text/javascript">
     $(function() {
     $("#category-select").on("change", function() {
       var select_val = $(this).val();
       console.log(select_val);
       if (select_val) {
-       // alert(select_val == select_val);
        $(this).addClass('hide');
        $("#msg").addClass('hide'); 
-         //alert(gameobj);
-      // Put words into `.ws-words`
+       $("#timer").removeClass('hide')
+       $("#first").addClass('hide')
+       $("#start").removeClass('hide')
+         // Put words into `.ws-words`
         $.ajax({
         url:"words/fetch_words",
         type:'GET',
         dataType: "json",
-        data: {"select_val" : select_val } , //select_val,
+        data: {"select_val" : select_val } , 
         success: function(data){
+          alert("success")
          // alert("success")
           gon.words=data
           
          //let timerId = setInterval(2000);
         // alert(data);
-          alert("Game is start");
-          console.log(data)
+        alert("Game is start");
 
+        console.log(data)
 
+        
 
-        var timeLeft = 60;
-        var elem = document.getElementById('some_div');
-        var timerId = setInterval(countdown, 1000);
-
-        function countdown() {
-          if (timeLeft == -1) {
-          clearTimeout(timerId);
-          //doSomething();
-          } else {
-          elem.innerHTML = timeLeft + ' seconds remaining';
-          timeLeft--;
-          }
+        },
+        error:function(){
+          alert("error")
         }
+      });
 
+  
+      
+     }
+   
 
-
-
-          var input = {
+    });
+    
+  });
+    function start_game() {
+  alert("hello")
+  var input = {
               year: 0,
               month: 0,
               day: 0,
@@ -82,8 +98,7 @@
         timestamp = new Date(timestamp.getTime() + interval * 1000);
         document.getElementById('countdown2').innerHTML =  timestamp.getMinutes() + ':' + timestamp.getSeconds() ;
          }, Math.abs(interval) * 1000);
-       // console.log(timestamp)
-          var gameAreaEl = document.getElementById('ws-area');
+        var gameAreaEl = document.getElementById('ws-area');
           var gameobj = gameAreaEl.wordSearch();
 
         //Put words into `.ws-words`
@@ -96,19 +111,34 @@
             wordsWrap.appendChild(liEl);
 
 
+         
+
           }
 
-        },
-        error:function(){
-          alert("error")
-        }
-      });
-      
-      
-     } 
+  var player_time = document.getElementById("countdown2").innerHTML;
+     console.log(player_time)
+   $.ajax({
+    url: "/histories/", 
+    data: { "score": 0 , "player_time": "1:0" }, 
+    dataType: "json",
+    type: 'POST',
+    success: function (data) {
+        console.log(data);
+        console.log(data.id);
 
-    });
-  });
+        alert("created")
+        document.getElementById("p1").innerHTML = data.id;
+       
+
+     },
+        error:function(){
+
+          alert("error");
+          
+        }
+      }); 
+   $("#start").addClass('hide')
+}
 
     //alert(words)
     

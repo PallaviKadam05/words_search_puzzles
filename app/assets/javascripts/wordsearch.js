@@ -1,4 +1,6 @@
 (function(){
+
+
   'use strict';
 
   // Extend the element method
@@ -14,6 +16,42 @@
    * constructor
    */
   function WordSearch(wrapEl, settings) {
+     var now = new Date();
+     this.flag = false;
+     var timeup = now.setSeconds(now.getSeconds() + 60);
+     
+//var timeup = now.setHours(now.getHours() + 1);
+     //alert(score)
+    var time_counter = setInterval(function(){
+      var now = new Date();
+     var count = Math.round((timeup - now)/1000);
+     if (now > timeup) {
+     // window.location = "/logout"; //or somethin'
+     //alert(this.counter)
+    //alert("stop")
+     //alert(counter)
+     //alert(this.solved)
+     
+     alert("Time Up")
+     
+      clearInterval(time_counter);
+      window.clearInterval(tm);
+     document.location.reload();
+
+ 
+     // this.lookup(this.selected);
+     
+
+      return;
+    }
+    var seconds = Math.floor((count%60));
+    var minutes = Math.floor((count/60) % 60);
+   document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+     }, 1000);
+     
+
+     //this.stop= time_counter;
+ 
     this.wrapEl = wrapEl;
 
     // Add `.ws-area` to wrap element
@@ -193,6 +231,7 @@
     this.selected = [];
 
     this.initmatrix(this.settings.gridSize);
+
   }
 
   /**
@@ -250,6 +289,7 @@
         cvEl.addEventListener('mouseup', this.onMouseup());
 
         divEl.appendChild(cvEl);
+
       }
     }
   }
@@ -313,7 +353,7 @@
   WordSearch.prototype.clearHighlight = function() {
     var selectedEls = document.querySelectorAll('.ws-selected');
     for (var i = 0; i < selectedEls.length; i++) {
-      selectedEls[i].classList.remove('ws-selected');
+      selectedEls[i].classList.add('ws-selected');
     //   var wrong = [''];
     //    for (var i = 0; i < selected.length; i++) {
     //   words[0] += selected[i].letter;
@@ -326,11 +366,14 @@
    * Lookup if the wordlist contains the selected
    * @param {Array} selected
    */
-  WordSearch.prototype.lookup = function(selected) {
+
+  WordSearch.prototype.lookup = function(selected ) { 
+
     //var wrong_word = 0;
 
+
     var words = [''];
-	var wa=0
+	 
     for (var i = 0; i < selected.length; i++) {
       words[0] += selected[i].letter;
 
@@ -345,7 +388,7 @@
         var row = selected[i].row + 1,
           col = selected[i].col + 1,
           el = document.querySelector('.ws-area .ws-row:nth-child(' + row + ') .ws-col:nth-child(' + col + ')');
-
+         el.classList.remove('ws-selected');
         el.classList.add('ws-found');
       
       }
@@ -359,20 +402,50 @@
 			wordListItems[i].innerHTML = "<del>"+wordListItems[i].innerHTML+"</del>";
 			//Increment solved words.
 			this.solved++;
+      
      
 			
 		  }
 		    }
         } 
 
-      alert(this.solved);
-      //Game over?
+           //Game over?
       if(this.solved == this.settings.words.length){
         var score=this.settings.words.length
       	alert("Score is" + score);
         console.log("Score" +score);
         this.gameOver();
       }
+
+      else{
+
+        //Update Data
+        //alert("Update data")
+        //window.clearInterval(tm);
+    window.clearInterval(this.time_counter);
+      var player_time = document.getElementById("countdown2").innerHTML;
+     console.log(player_time)
+     var h_id=document.getElementById("p1").textContent;
+    $.ajax({
+      url: "/histories/"+h_id, 
+      data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
+      dataType: "json",
+      type: 'PATCH',
+      success: function (data) {
+      alert("Updated")
+        console.log(data);
+      },
+      error:function(){
+
+          alert("error");
+          
+      }
+      });
+    
+
+      }
+    
+
       
       
     }
@@ -380,28 +453,37 @@
     { 
      
         this.wrong_word --
-    	alert("You have only "+ this.wrong_word + " attepts")
-       
+    	alert("You have only "+ this.wrong_word + " attempts")
+
+
+// document.getElementById("demo").innerHTML = 
+//        "<div class='alert alert-danger' role='alert'>"
+//   "<strong>You have only!</strong> "+ this.wrong_word +" attepts"
+// "</div>";
        if(this.wrong_word == 0)
        {
-        
+         window.clearInterval(tm);
+    window.clearInterval(this.stop);
         var player_time = document.getElementById("countdown2").innerHTML;
      console.log(player_time)
-     
+      var h_id=document.getElementById("p1").innerHTML
     $.ajax({
-    url: "/histories", 
-    data: { "score": this.solved , "player_time": player_time}, 
-    dataType: "json",
-    type: 'POST',
-    success: function (data) {
+      url: "/histories/"+h_id, 
+      data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
+      dataType: "json",
+      type: 'PATCH',
+      success: function (data) {
+      alert("Updated")
         console.log(data);
-     },
-        error:function(){
+      },
+      error:function(){
 
           alert("error");
           
-        }
+      }
       });
+     
+    
     var overlay = document.createElement("div");
     overlay.setAttribute("id", "ws-game-over-outer");
     overlay.setAttribute("class", "ws-game-over-outer");
@@ -413,52 +495,18 @@
       overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
                             "<div class='ws-game-over' id='ws-game-over'>"+
                               "<h2>Opps....!  </h2>"+ this.settings.words.length+
-                              "<p>You've Not found all of the words!</p>"+"<button class='primary' id='refresh'>OK</button>"+
+                              "<p>You've Not found all of the words!</p>"+"<button class='primary' onclick='location.reload()'>OK</button>"+
                             "</div>"+
                           "</div>";
+
        }
 
 
-    //    else{
-    
-    //         if (timeLeft == -1) {
-    //       clearTimeout(timerId);
-
-    //     var player_time = document.getElementById("countdown2").innerHTML;
-    //  console.log(player_time)
-     
-    // $.ajax({
-    // url: "/histories", 
-    // data: { "score": this.solved , "player_time": player_time}, 
-    // dataType: "json",
-    // type: 'POST',
-    // success: function (data) {
-    //     console.log(data);
-    //  },
-    //     error:function(){
-
-    //       alert("error");
-          
-    //     }
-    //   });
-    // var overlay = document.createElement("div");
-    // overlay.setAttribute("id", "ws-game-over-outer");
-    // overlay.setAttribute("class", "ws-game-over-outer");
-    // this.wrapEl.parentNode.appendChild(overlay);
+       else{
+                
 
 
-    // //Create overlay content.
-    // var overlay = document.getElementById("ws-game-over-outer");
-    //   overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
-    //                         "<div class='ws-game-over' id='ws-game-over'>"+
-    //                           "<h2>Opps Time Up....!  </h2>"+ this.settings.words.length+
-    //                           "<p>You've Not found all of the words!</p>"+
-    //                         "</div>"+
-    //                       "</div>";
-    //       //doSomething();
-    //       }
-
-    //    }
+      }
 
     }
   }
@@ -469,28 +517,29 @@
 WordSearch.prototype.gameOver = function() {
 
     window.clearInterval(tm);
+    window.clearInterval(this.stop);
     //window.clearInterval(timeR)
      var score=this.settings.words.length
      //alert("Score new" +s);
      var player_time = document.getElementById("countdown2").innerHTML;
      console.log(player_time)
-     //console.log(score)
-   //t=document.getElementById('countdown2').value
-   //alert("Time" +t)
-   
-   $.ajax({
-    url: "/histories", //"/histories/create?score="+score+,
-    data: { "score": score , "player_time": player_time}, //, "score": mark
-    dataType: "json",
-    type: 'POST',
-    success: function (data) {
+
+    
+   var h_id=document.getElementById("p1").innerHTML
+    $.ajax({
+      url: "/histories/"+h_id, 
+      data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
+      dataType: "json",
+      type: 'PATCH',
+      success: function (data) {
+      alert("Updated")
         console.log(data);
-    },
-        error:function(){
+      },
+      error:function(){
 
           alert("error");
           
-        }
+      }
       });
 
     //Create overlay.
@@ -505,7 +554,7 @@ WordSearch.prototype.gameOver = function() {
       overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
                             "<div class='ws-game-over' id='ws-game-over'>"+
                               "<h2>Congratulations!</h2>"+
-                              "<p>You've found all of the words!</p>"+"<button class='primary' id='refresh'>OK</button>"+
+                              "<p>You've found all of the words!</p>"+"<button class='primary' onclick='location.reload()'>OK</button>"+
                             "</div>"+
                           "</div>";
 

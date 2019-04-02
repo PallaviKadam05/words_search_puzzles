@@ -7,6 +7,7 @@ class HistoriesController < ApplicationController
   # GET /histories.json
   def index
     @histories = History.all
+
   end
 
   # GET /histories/1
@@ -31,6 +32,9 @@ class HistoriesController < ApplicationController
      @id = session[:id] 
     @history = History.create!(history_params)
     render json: @history
+   # binding.pry
+    @history_id = History.order("id DESC").first
+    gon.h_id = @history_id.id
     
   end
 
@@ -38,6 +42,7 @@ class HistoriesController < ApplicationController
   # PATCH/PUT /histories/1
   # PATCH/PUT /histories/1.json
   def update
+    @id = session[:id] 
     respond_to do |format|
       if @history.update(history_params)
         format.html { redirect_to @history, notice: 'History was successfully updated.' }
@@ -75,7 +80,7 @@ class HistoriesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def history_params
       #params.require(:history).permit(:score, :word_id, :user_id)
-       params.permit(:score, :player_time).merge(word_id: @id, user_id: current_user.id)
+       params.permit(:score, :player_time, :solved_words_count).merge(word_id: @id, user_id: current_user.id)
 
 
     end

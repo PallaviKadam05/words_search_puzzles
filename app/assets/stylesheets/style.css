@@ -1,15 +1,90 @@
-
+@media screen and (max-width:800px) {
+  .left, .main, .right {
+    width:100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+.main {
+  float:left;
+  width:60%;
+  padding:0 20px;
+}
 body, h1 {
+   /*background-image: url("/word-search-puzzle.jpg");*/
   margin: 0;
   padding: 0;
+  background-image:url("word-search-puzzle.jpg");
+background-repeat: no-repeat;
+background-size: cover
 }
 
 h1 {
   text-transform: uppercase;
+  color:red;
 }
 
 body {
+  
   color: #333;
+}
+/* Select Options*/
+.center-on-page {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #3a2c93;
+  background-image: none;
+}
+/* Custom Select */
+.select {
+  position: absolute;
+  display: block;
+  width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: .25em;
+}
+select {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 0 0 .5em;
+  color: #fff;
+  cursor: pointer;
+}
+select::-ms-expand {
+  display: none;
+}
+/* Arrow */
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 1em;
+  background: #34495e;
+  pointer-events: none;
+}
+/* Transition */
+.select:hover::after {
+  color: #f39c12;
+}
+.select::after {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
 }
 
 /* Common */
@@ -27,18 +102,24 @@ body {
 /* Home */
 
 .wrap {
-  width: 960px;
+  /*color:red;*/
+  /*width: 960px;*/
   margin: 0 auto;
-  padding: 40px 0;
+ /* padding: 40px 0;*/
   text-align: center;
   position:relative;
+   /*float:left;*/
+  width:60%;
+  padding:0 20px;
 }
 
 .logo, #gameArea {
   margin-bottom: 40px;
+  text-shadow: 3px 2px red;
 }
 
 .ws-area, .ws-words {
+  color:red;
   display: inline-block;
   vertical-align: top;
 }
@@ -46,22 +127,36 @@ body {
 .ws-words {
   margin-left: 20px;
   text-align: left;
+  /*background: #6d4c41;*/
+  /* border: 10px solid blue;*/
+   border-radius: 10px;
+  padding: 20px;
+
+  /*display: inline-block;*/
 }
 
 .ws-word {
   margin-bottom: 4px;
+ /* border: 10px solid blue;*/
+   /*padding: 20px;*/
+  /*padding: 20px;*/
+  border-radius: 10px;
 }
 
 .ws-words ::first-letter{
+
   text-transform : capitalize;
+
 }
 
 /* Wordsearch */
 
 .ws-area {
-  background: #fafafa;
+  /*background: #6d4c41;*/
+  
   display: inline-block;
-  padding: 20px;
+   border: 25px solid blue;
+  padding: 20px ;
   border-radius: 10px;
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
