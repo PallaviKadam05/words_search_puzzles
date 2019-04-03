@@ -19,17 +19,23 @@
 </div>
  
 <div class="wrap">
-   <div class="alert alert-danger hide" id="timer"></div>
+  <p id="category_name" class="h1" style="color:blue;"></p>
+  <button onclick="start_game()" class="hide btn btn-lg btn-success" id="start">Lets Start Game  <span class="glyphicon glyphicon-hand-right"></span></button><br /><br />
+  <button onclick="document.location.reload();" class="hide btn btn-lg btn-warning" id="back"><span class="glyphicon glyphicon-hand-left"></span>  Back</button>
 
-   <div id="some_div"></div>
-      <!-- <div id="timer">2:00</div> -->
-      <div id="countdown2"> </div>
-     <p id="p1" class="hide"></p>
+</div>
+<div class="wrap jumbotron hide" id="grid">
+   <div class="hide circle-text" id="timer"></div>
+ 
+       <div id="countdown2" class="hide " > 
+       </div>
+      <p id="p1" class="hide"></p>
+      <div class="score" >Scores:<span id="scores"></span></div>
       <section id="ws-area"  ></section>
-       <button onclick="start_game()" class="hide" id="start">Lets Start Game</button>
+     
+      <ul class="ws-words h3 card card-image" ></ul>
 
-       <ul class="ws-words h3 card card-image" ></ul> <!-- style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);"
-      -->
+      
    
   </div>
 
@@ -41,9 +47,10 @@
       if (select_val) {
        $(this).addClass('hide');
        $("#msg").addClass('hide'); 
-       $("#timer").removeClass('hide')
+      
        $("#first").addClass('hide')
        $("#start").removeClass('hide')
+       $('#back').removeClass('hide')
          // Put words into `.ws-words`
         $.ajax({
         url:"words/fetch_words",
@@ -51,13 +58,8 @@
         dataType: "json",
         data: {"select_val" : select_val } , 
         success: function(data){
-          alert("success")
-         // alert("success")
           gon.words=data
-          
-         //let timerId = setInterval(2000);
-        // alert(data);
-        alert("Game is start");
+          document.getElementById("category_name").innerHTML = select_val
 
         console.log(data)
 
@@ -78,7 +80,27 @@
     
   });
     function start_game() {
-  alert("hello")
+  let timerInterval
+Swal.fire({
+  timer: 2000,
+  onBeforeOpen: () => {
+    Swal.showLoading()
+    timerInterval = setInterval(() => {
+      Swal.getContent().querySelector('strong')
+        .textContent = Swal.getTimerLeft()
+    }, 100)
+  },
+  onClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  if (
+    // Read more about handling dismissals
+    result.dismiss === Swal.DismissReason.timer
+  ) {
+    // console.log('I was closed by the timer')
+  }
+})
   var input = {
               year: 0,
               month: 0,
@@ -93,6 +115,7 @@
          input.hours, input.minutes, input.seconds);
 
          var interval = 1;
+
 
         tm=setInterval(function () {
         timestamp = new Date(timestamp.getTime() + interval * 1000);
@@ -126,9 +149,9 @@
         console.log(data);
         console.log(data.id);
 
-        alert("created")
+        // alert("created")
         document.getElementById("p1").innerHTML = data.id;
-       
+        document.getElementById("scores").innerHTML = 0
 
      },
         error:function(){
@@ -138,6 +161,8 @@
         }
       }); 
    $("#start").addClass('hide')
+    $("#timer").removeClass('hide')
+    $("#grid").removeClass('hide')
 }
 
     //alert(words)

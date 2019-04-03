@@ -1,24 +1,30 @@
 <p id="notice"><%= notice %></p>
+ 
+<h1 >Histories</h1>
+<!-- <button onclick="document.location.reload();" class="hide btn btn-lg btn-warning" id="back"><span class="glyphicon glyphicon-hand-left"></span>  Back</button> -->
+<div class="card">
+  <div class="card-body">
+                    <!--Table-->
+    
+   <table class="table table-hover table-sm jumbotron-history">
+                        <!--Table head-->
+     <thead style="background-color:#C0C0C0;">
+       <tr class="text-white">
 
-<h1>Histories</h1>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Word Category</th>
-      <th>Score</th>
-      <th>Time</th>
-      <th>Date</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+        
+        <th>Word Category</th>
+        <th>Score</th>
+        <th>Time</th>
+        <th>Date</th>
+        <th colspan="3"></th>
+       </tr>
+     </thead>
 
   <tbody>
     <% @histories.each do |history| %>
     <% if current_user.id == history.user_id %>
       <tr>
-        <td><%= history.user.name %></td>
+       
          <td><%= history.word.category %></td>
          <td><%= history.score %></td>
          <td><%= history.player_time %></td>
@@ -35,6 +41,7 @@
      <% end %>
   </tbody>
 </table>
-
+</div>
+</div>
 <br>
 

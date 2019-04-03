@@ -403,6 +403,7 @@
 			//Increment solved words.
 			this.solved++;
       
+      
      
 			
 		  }
@@ -419,11 +420,12 @@
 
       else{
 
-        //Update Data
-        //alert("Update data")
+        //Update Data each time
+        
         //window.clearInterval(tm);
     window.clearInterval(this.time_counter);
-      var player_time = document.getElementById("countdown2").innerHTML;
+      var player_time = document.getElementById("countdown2").textContent;
+
      console.log(player_time)
      var h_id=document.getElementById("p1").textContent;
     $.ajax({
@@ -434,6 +436,8 @@
       success: function (data) {
       alert("Updated")
         console.log(data);
+
+        
       },
       error:function(){
 
@@ -441,6 +445,8 @@
           
       }
       });
+    
+      document.getElementById("scores").innerHTML = this.solved;
     
 
       }
@@ -454,7 +460,7 @@
      
         this.wrong_word --
     	alert("You have only "+ this.wrong_word + " attempts")
-
+      
 
 // document.getElementById("demo").innerHTML = 
 //        "<div class='alert alert-danger' role='alert'>"
@@ -464,17 +470,18 @@
        {
          window.clearInterval(tm);
     window.clearInterval(this.stop);
-        var player_time = document.getElementById("countdown2").innerHTML;
+        var player_time = document.getElementById("countdown2").textContent;
      console.log(player_time)
-      var h_id=document.getElementById("p1").innerHTML
+      var h_id=document.getElementById("p1").textContent;
     $.ajax({
       url: "/histories/"+h_id, 
       data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
       dataType: "json",
       type: 'PATCH',
       success: function (data) {
-      alert("Updated")
+      // alert("Updated")
         console.log(data);
+        
       },
       error:function(){
 
@@ -482,22 +489,23 @@
           
       }
       });
-     
-    
-    var overlay = document.createElement("div");
-    overlay.setAttribute("id", "ws-game-over-outer");
-    overlay.setAttribute("class", "ws-game-over-outer");
-    this.wrapEl.parentNode.appendChild(overlay);
+    sweetAlert("Oops...", "You've Not found all of the words!!", "error");
+     // document.location.reload();
+
+    // var overlay = document.createElement("div");
+    // overlay.setAttribute("id", "ws-game-over-outer");
+    // overlay.setAttribute("class", "ws-game-over-outer");
+    // this.wrapEl.parentNode.appendChild(overlay);
 
 
-    //Create overlay content.
-    var overlay = document.getElementById("ws-game-over-outer");
-      overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
-                            "<div class='ws-game-over' id='ws-game-over'>"+
-                              "<h2>Opps....!  </h2>"+ this.settings.words.length+
-                              "<p>You've Not found all of the words!</p>"+"<button class='primary' onclick='location.reload()'>OK</button>"+
-                            "</div>"+
-                          "</div>";
+    // //Create overlay content.
+    // var overlay = document.getElementById("ws-game-over-outer");
+    //   overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
+    //                         "<div class='ws-game-over' id='ws-game-over'>"+
+    //                           "<h2>Opps....!  </h2>"+ this.settings.words.length+
+    //                           "<p>You've Not found all of the words!</p>"+"<button class='primary' onclick='location.reload()'>OK</button>"+
+    //                         "</div>"+
+    //                       "</div>";
 
        }
 
@@ -521,11 +529,12 @@ WordSearch.prototype.gameOver = function() {
     //window.clearInterval(timeR)
      var score=this.settings.words.length
      //alert("Score new" +s);
-     var player_time = document.getElementById("countdown2").innerHTML;
+     var player_time = document.getElementById("countdown2").textContent;
      console.log(player_time)
 
     
-   var h_id=document.getElementById("p1").innerHTML
+   var h_id=document.getElementById("p1").textContent;
+
     $.ajax({
       url: "/histories/"+h_id, 
       data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
@@ -534,6 +543,7 @@ WordSearch.prototype.gameOver = function() {
       success: function (data) {
       alert("Updated")
         console.log(data);
+        document.getElementById("scores").innerHTML = this.solved
       },
       error:function(){
 
@@ -541,7 +551,7 @@ WordSearch.prototype.gameOver = function() {
           
       }
       });
-
+      
     //Create overlay.
     var overlay = document.createElement("div");
     overlay.setAttribute("id", "ws-game-over-outer");
