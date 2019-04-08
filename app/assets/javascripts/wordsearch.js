@@ -31,12 +31,23 @@
     //alert("stop")
      //alert(counter)
      //alert(this.solved)
-     
-     alert("Time Up")
+     $(document).ready(function() {
+                   swal({ 
+                   title: "Ohh.....!",
+                   text: "Time Up",
+                   type: "info", 
+                   },
+                   function(){
+   
+                    document.location.reload();
+                   });
+
+     });
+     // alert("Time Up")
      
       clearInterval(time_counter);
       window.clearInterval(tm);
-     document.location.reload();
+     // document.location.reload();
 
  
      // this.lookup(this.selected);
@@ -48,7 +59,7 @@
     var minutes = Math.floor((count/60) % 60);
    document.getElementById("timer").innerHTML = minutes + ":" + seconds;
      }, 1000);
-     
+    
 
      //this.stop= time_counter;
  
@@ -413,7 +424,7 @@
            //Game over?
       if(this.solved == this.settings.words.length){
         var score=this.settings.words.length
-      	alert("Score is" + score);
+      	//alert("Score is" + score);
         console.log("Score" +score);
         this.gameOver();
       }
@@ -434,7 +445,7 @@
       dataType: "json",
       type: 'PATCH',
       success: function (data) {
-      alert("Updated")
+      //alert("Updated")
         console.log(data);
 
         
@@ -459,7 +470,7 @@
     { 
      
         this.wrong_word --
-    	alert("You have only "+ this.wrong_word + " attempts")
+    	//alert("You have only "+ this.wrong_word + " attempts")
       
 
 // document.getElementById("demo").innerHTML = 
@@ -489,23 +500,21 @@
           
       }
       });
-    sweetAlert("Oops...", "You've Not found all of the words!!", "error");
-     // document.location.reload();
+  
 
-    // var overlay = document.createElement("div");
-    // overlay.setAttribute("id", "ws-game-over-outer");
-    // overlay.setAttribute("class", "ws-game-over-outer");
-    // this.wrapEl.parentNode.appendChild(overlay);
+    $(document).ready(function() {
+    swal({ 
+        title: "Oops...!!!",
+        text: "You've Not found all of the words!",
+        type: "error" 
+    },
+   function(){
+   
+    document.location.reload();
+   });
 
+   });
 
-    // //Create overlay content.
-    // var overlay = document.getElementById("ws-game-over-outer");
-    //   overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
-    //                         "<div class='ws-game-over' id='ws-game-over'>"+
-    //                           "<h2>Opps....!  </h2>"+ this.settings.words.length+
-    //                           "<p>You've Not found all of the words!</p>"+"<button class='primary' onclick='location.reload()'>OK</button>"+
-    //                         "</div>"+
-    //                       "</div>";
 
        }
 
@@ -526,9 +535,9 @@ WordSearch.prototype.gameOver = function() {
 
     window.clearInterval(tm);
     window.clearInterval(this.stop);
-    //window.clearInterval(timeR)
+    
      var score=this.settings.words.length
-     //alert("Score new" +s);
+     
      var player_time = document.getElementById("countdown2").textContent;
      console.log(player_time)
 
@@ -541,7 +550,7 @@ WordSearch.prototype.gameOver = function() {
       dataType: "json",
       type: 'PATCH',
       success: function (data) {
-      alert("Updated")
+      //alert("Updated")
         console.log(data);
         document.getElementById("scores").innerHTML = this.solved
       },
@@ -551,26 +560,24 @@ WordSearch.prototype.gameOver = function() {
           
       }
       });
-      
-    //Create overlay.
-    var overlay = document.createElement("div");
-    overlay.setAttribute("id", "ws-game-over-outer");
-    overlay.setAttribute("class", "ws-game-over-outer");
-    this.wrapEl.parentNode.appendChild(overlay);
 
+    $(document).ready(function() {
+                   swal({
+                        title: 'Congratulations.....!',
+                        text: 'You Solve All Words',
+                        imageUrl: 'https://thumbs.gfycat.com/BaggySlimBalloonfish-max-1mb.gif',
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Clapping',
+                        animation: false  
+                         },
+                        function(){
+   
+                          document.location.reload();
+                        });
 
-    //Create overlay content.
-    var overlay = document.getElementById("ws-game-over-outer");
-      overlay.innerHTML = "<div class='ws-game-over-inner' id='ws-game-over-inner'>"+
-                            "<div class='ws-game-over' id='ws-game-over'>"+
-                              "<h2>Congratulations!</h2>"+
-                              "<p>You've found all of the words!</p>"+"<button class='primary' onclick='location.reload()'>OK</button>"+
-                            "</div>"+
-                          "</div>";
+     });
 
-
-    
-    
   }
 
   /**

@@ -18,6 +18,7 @@ class WordsController < ApplicationController
    # }
    #render json: @words
    #render json: @words
+   @histories=History.limit(5).order('created_at DESC')
     respond_to do |format|
       format.html
       format.js{}

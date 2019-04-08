@@ -1,8 +1,9 @@
 <p id="notice"><%= notice %></p>
- 
-<h1 >Histories</h1>
-<!-- <button onclick="document.location.reload();" class="hide btn btn-lg btn-warning" id="back"><span class="glyphicon glyphicon-hand-left"></span>  Back</button> -->
+ <button class="btn btn-primary" onclick="">Back</button>
+
+<h1 class="center">Histories</h1>
 <div class="card">
+
   <div class="card-body">
                     <!--Table-->
     
@@ -31,17 +32,22 @@
          <td><%= history.created_at %></td>
         
   
-        <!-- <td><%= link_to 'Show', history %></td>
-        <td><%= link_to 'Edit', edit_history_path(history) %></td>
-        <td><%= link_to 'Destroy', history, method: :delete, data: { confirm: 'Are you sure?' } %></td>
- -->      </tr>
+      
     
     <% end %>
 
      <% end %>
   </tbody>
 </table>
+<div class="row">
+   <div class="col-lg-6 col-lg-offset-3 text-center">
+    <%= will_paginate @histories, list_classes: %w(pagination justify-content-end), previous_label: "PREVIOUS", next_label: "NEXT", inner_window: 1, outer_window: 0 %></div>
 </div>
 </div>
+
+
+
+</div>
+
 <br>
 
