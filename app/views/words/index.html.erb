@@ -1,5 +1,7 @@
 <div class="wrap">
 <h1 class="logo ">Word search game</h1>
+<p id="level_name" class="h1 hide" style="color:blue;"></p>
+<p id="level_value" class="hide"></p>
 <div id="error">
 </div>
 <div id="first">
@@ -15,31 +17,29 @@
  <% end %>
 </div>
 </div>
- <div class="row hide" id="history">
+<div class="row hide" id="history">
   <div class="side">
-    <p id="notice"><%= notice %></p>
- 
-<h2 class="center" style="text-align: center;">Histories</h2>
-<div class="card">
-  <div class="card-body">
-    <!--Table-->
+   <h2 class="center" style="text-align: center;">Histories</h2>
+   <div class="card">
+     <div class="card-body">
+      <!--Table-->
     
-   <table class="table table-hover table-sm jumbotron-history">
+       <table class="table table-hover table-sm jumbotron-history">
                         <!--Table head-->
-     <thead style="background-color:#C0C0C0;">
-       <tr class="text-white">
+       <thead style="background-color:#C0C0C0;">
+        <tr class="text-white">
 
         
-        <th>Word Category</th>
-        <th>Score</th>
-        <th>Time</th>
-        <th>Date</th>
-        <th colspan="3"></th>
-       </tr>
-     </thead>
+         <th>Word Category</th>
+         <th>Score</th>
+         <th>Time</th>
+         <th>Date</th>
+         <th colspan="3"></th>
+        </tr>
+       </thead>
 
   <tbody>
-    <% @histories.each do |history| %>
+  <% @histories.each do |history| %>
     <% if current_user.id == history.user_id %>
       <tr>
        
@@ -57,39 +57,29 @@
 </div>
 </div>
 <br>
+</div>
 
-
-  </div>
 <div class="wrap" id="buttons">
-  <p id="category_name" class="h1" style="color:blue;"></p><br /><br />
-  <!-- <div class="form-group">
-  <select id="levels" class="hide form-control selectpicker" data-style="btn-primary" style="" required >
-    
-    <option>High</option>
-    <option>Low</option>
-    <option>Medium</option>
-  </select>
-  </div> -->
-  <div id="demo" class="select" style="text-align: center;">
-  <select required class="select " id="levels">
-   
-    <option value=""
-            hidden
-    >Select Levels</option>
+  <p id="category_name" class="h1" style="color:blue;"></p>
+  <div id="demo" class="select " style="">
 
-    <!-- normal options -->
-    <option value="1">High</option>
-    <option value="2">Medium</option>
-    <option value="3">Low</option>
+  <select class="select" id="levels" name="levels" required onchange="enableButton()" />
+   <option value="" disabled selected>Select Level</option>
+   <!--  <option value=""
+            hidden>Select Levels</option> -->
+    <option value="15">High</option>
+    <option value="10">Medium</option>
+    <option value="5">Low</option>
     
   </select>
   </div>
-  <br /><br /><br />
+ <!--  <br /><br /><br /> -->
 
-  <button onclick="start_game()" class="hide btn btn-lg btn-success" id="start">Lets Start Game  <span class="glyphicon glyphicon-hand-right"></span></button><br /><br />
+  <button onclick="start_game('levels');" class="hide btn btn-lg btn-success" id="start" disabled >Lets Start Game  <span class="glyphicon glyphicon-hand-right"></span></button><br /><br />
   <button onclick="" class="hide btn btn-lg btn-primary" id="help" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign"></span>  Help</button>
   <br /><br />
   <button onclick="high_score()" class="btn btn-lg btn-primary" id="score" data-toggle="modal" data-target="#high_score"><span class="glyphicon glyphicon-king"></span> High Score</button>
+   <p id="high"> series: <%= @high_scores.to_json %> </p><br/><br>
   <br /><br />
 
   <button onclick="document.location.reload();" class="hide btn btn-lg btn-warning" id="back"><span class="glyphicon glyphicon-hand-left"></span>  Back</button>
@@ -137,8 +127,36 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-       1).<br />
-       2).
+        <table class="table table-hover table-sm jumbotron-history">
+                        <!--Table head-->
+       <thead style="background-color:#C0C0C0;">
+        <tr class="text-white">
+
+         <!-- <th>Name</th>
+         <th>Word Category</th> -->
+         <th>Score</th>
+         <th>Time</th>
+         <th>Date</th>
+         <th colspan="3"></th>
+        </tr>
+       </thead>
+
+  <tbody>
+  <% @high_scoress.each do |history| %>
+  
+          <tr>
+         
+         <td><%= history.score %></td>
+         <td><%= history.player_time %></td>
+         <td><%= history.created_at %></td>
+      </tr>
+    
+    
+    
+     <% end %>
+  </tbody>
+</table>
+
       </div>
 
       <!-- Modal footer -->
@@ -152,12 +170,13 @@
 </div>
 </div>
 
-<div class="wrap jumbotron hide" id="grid">
+<div class="wrap-gride jumbotron hide" id="grid">
   <!-- <div class="hide circle-text" id="timer" ></div>
    <div style=" text-align: right;" class="fixed-top"><a href="#">
           <span class="glyphicon glyphicon-home"></span>
         </a></div>
    <div class="hide circle-text" id="timer" ></div> -->
+    <p id="category_name" class="h1" style="color:blue;"></p>
  <div class="parent">
   <div class="previous"> <div class="hide circle-text" id="timer" ></div>
 </div>
@@ -179,7 +198,7 @@
       <p id="p1" class="hide"></p>
       <div class="score h3" >Score:<span id="scores"></span></div>
       <section id="ws-area"  ></section>
-     
+        
       <ul class="ws-words h3 card card-image" ></ul>
 
       
@@ -187,6 +206,23 @@
   </div>
 
     <script type="text/javascript">
+      function enableButton()
+      {
+      var selectelevel = document.getElementById('levels');
+      var level_value=document.getElementById("levels").value
+      console.log(level_value)
+      var btnelem = document.getElementById('start');
+      btnelem.disabled = !selectelevel.value;
+      //var e = document.getElementById("nameSelect");
+      var level = selectelevel.options[selectelevel.selectedIndex].text;
+      document.getElementById("level_name").innerHTML = level
+      document.getElementById("level_value").innerHTML = level_value
+      // $("#levels").on("change", function() {
+      //   var select_level= $(this).val();
+      //  document.getElementById("level_name").innerHTML = select_level
+      // });
+
+     }
     $(function() {
     $("#category-select").on("change", function() {
       // $(document).ready(function () {
@@ -216,11 +252,13 @@
         dataType: "json",
         data: {"select_val" : select_val } , 
         success: function(data){
-          gon.words=data
+          gon.words=data.words
           document.getElementById("category_name").innerHTML = select_val
-
-        console.log(data)
-
+          gon.high_scores=data.scores
+          gon.word_id=data.word_id
+        
+         
+         //console.log(gon.s)
         
 
         },
@@ -229,7 +267,7 @@
         }
       });
 
-  
+
       
      }
    
@@ -237,17 +275,66 @@
     });
     
   });
-    function start_game() {
-  let timerInterval
-Swal.fire({
-  timer: 2000,
-  onBeforeOpen: () => {
-    Swal.showLoading()
-    timerInterval = setInterval(() => {
-      Swal.getContent().querySelector('strong')
+  function start_game() {
+     var now = new Date();
+     this.flag = false;
+     var timeup = now.setSeconds(now.getSeconds() + 60);
+     
+//var timeup = now.setHours(now.getHours() + 1);
+     //alert(score)
+    var time_counter = setInterval(function(){
+      var now = new Date();
+     var count = Math.round((timeup - now)/1000);
+     if (now > timeup) {
+     // window.location = "/logout"; //or somethin'
+     //alert(this.counter)
+    //alert("stop")
+     //alert(counter)
+     //alert(this.solved)
+     $(document).ready(function() {
+                   swal({ 
+                   title: "Ohh.....!",
+                   text: "Time Up",
+                   type: "info", 
+                   },
+                   function(){
+   
+                    document.location.reload();
+                   });
+
+     });
+     // alert("Time Up")
+     
+      clearInterval(time_counter);
+      window.clearInterval(tm);
+     // document.location.reload();
+
+ 
+     // this.lookup(this.selected);
+     
+
+      return;
+    }
+    var seconds = Math.floor((count%60));
+    var minutes = Math.floor((count/60) % 60);
+   document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+     }, 1000);
+
+    
+
+     this.stop= time_counter;
+    alert(gon.word_id)
+    // console.log(data.scors)
+   let timerInterval
+      Swal.fire({
+      timer: 2000,
+      onBeforeOpen: () => {
+      Swal.showLoading()
+      timerInterval = setInterval(() => {
+        Swal.getContent().querySelector('strong')
         .textContent = Swal.getTimerLeft()
-    }, 100)
-  },
+        }, 100)
+   },
   onClose: () => {
     clearInterval(timerInterval)
   }
@@ -297,13 +384,15 @@ Swal.fire({
           }
 
   var player_time = document.getElementById("countdown2").innerHTML;
+  var level = document.getElementById("level_name").textContent;
      console.log(player_time)
    $.ajax({
     url: "/histories/", 
-    data: { "score": 0 , "player_time": "1:0" }, 
+    data: { "score": 0 , "player_time": "1:0" ,"level": level }, 
     dataType: "json",
     type: 'POST',
     success: function (data) {
+
         console.log(data);
         console.log(data.id);
 
@@ -326,11 +415,15 @@ Swal.fire({
     $("#grid").removeClass('hide')
     $("#history").addClass('hide')
      $("#levels").addClass('hide')
+     //$("#level_name").removeClass('hide')
 
 }
+
+
 function pause(){
-  window.clearInterval(time_counter);
- 
+  //alert("")
+  //window.clearInterval(time_counter);
+ clearTimeout(time_counter);
   swal({
   title: "Sweet!",
   text: "Here's a custom image.",
@@ -339,6 +432,34 @@ function pause(){
 });
   
   
+}
+function high_score(){
+  // console.log(gon.word_id)
+  // console.log(gon.high_scores)
+  $.ajax({
+        
+        url:"words/high_scores",
+        type:'GET',
+        dataType: "json",
+        data: {"word_id" : gon.word_id } , 
+        success: function(data){
+          alert("success")
+          console.log(data)
+          alert(data)
+          alert(JSON.stringify(data));
+          var high=JSON.stringify(data)
+          console.log(high)
+
+
+
+
+       },
+       error:function(){alert("error")
+       },
+     })
+
+//alert(gon.word_id)
+
 }
 </script>
 

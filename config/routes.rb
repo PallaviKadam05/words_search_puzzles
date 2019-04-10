@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :histories
-  devise_for :users
+  devise_for :users #,  :controllers => {omniauth_callbacks: "callbacks"}
+
 
   scope "/admin" do
   resources :users
@@ -10,6 +11,7 @@ end
 
    post 'histories/create'
   # get 'histories/save_data'
+  get 'words/high_scores'
    get 'words/fetch_words'
   resources :words
   resources :users

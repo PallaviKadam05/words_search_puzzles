@@ -6,4 +6,5 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 #word1=Word.create(category: 'Fruits', words_search: [ "APPLE" , "MANGO" , "BANANA" , "ORANGE" ])
-word2=Word.create(category: 'Animals', words_search: [ "TIGER" , "PYTHON" , "PANDA" , "CAT" , "DOG" ])
+#word2=Word.create(category: 'Animals', words_search: [ "TIGER" , "PYTHON" , "PANDA" , "CAT" , "DOG" ])
+word3=Word.create(category: 'Human Body Parts', words_search: [ "HEAD" , "ARM" , "WAIST" , "LEG" , "FACE" , "CHEST" , "STOMACH" ,"HIP" , "HAND" , "FOOT", "EYE" , "NOSE" , "MOUTH" , "HAIR" , "EAR" , "LIPS" , "NECK" , "FINGER" , "SHOULDER" , "KNEE" ])

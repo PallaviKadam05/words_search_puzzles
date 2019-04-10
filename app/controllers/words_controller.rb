@@ -6,24 +6,16 @@ class WordsController < ApplicationController
   # GET /words
   # GET /words.json
   def index
-    #binding.pry
-    #@word = Word.all
-
-    #gon.words=@word.words_search
-    #binding.pry
-    #@words =  @word.where(category: params[:select_val]).pluck(:words_search).flatten
-    #gon.words =  @word.where(category: params[:select_val]).pluck(:words_search).flatten
-   #  render json: {
-   #   words: @words
-   # }
-   #render json: @words
-   #render json: @words
    @histories=History.limit(5).order('created_at DESC')
+
+   @high_scoress=History.order("score DESC").limit(2).where(word_id: params[:word_id])
+    #params[:scores]
+   #@high_scoress = params[:high_scores]
     respond_to do |format|
       format.html
       format.js{}
     end
-   
+  
      
   end
 
@@ -33,21 +25,38 @@ class WordsController < ApplicationController
   end
 
   def fetch_words
-    #gon.words=@word.words_search
+    
     gon.words = Word.where(category: params[:select_val]).pluck(:words_search).flatten
-    #word_id=Word
-   # @id = Word.where(category: params[:select_val])
-
     @data = Word.where(category: params[:select_val]).first
-    #@id=@data.id
     session[:id]=@data.id
-
-    render json: gon.words
-    
+    gon.word_id=@data.id
     #binding.pry
+    #gon.s=session[:id]
+    @high_scores=History.order("score DESC").limit(2).where(word_id: @data.id)
     
+    #gon.high_scores=History.order("score DESC").limit(2).where(word_id: @data.id)
+    #render json: gon.words
+    #render json: gon.s
 
-    #redirect_to new_history_path(id: @id)
+    respond_to do |format|
+    format.json  { render :json => {:words => gon.words, 
+                                    :word_id => gon.word_id,
+                                    :scores => @high_scores }} 
+    end
+  end
+  def high_scores
+     @high_scores=History.order("score DESC").limit(2).where(word_id: params[:word_id])
+     #render json: @high_scores
+      respond_to do |format|
+        format.html
+        format.json { render json: @high_scores, status: :ok } #?????
+    end
+    respond_to do |format|
+    format.js
+    format.html { redirect_to index_action_path(params[:word_id]) }
+  end
+   # redirect_to index_action_path(passed_parameter: params[:word_id])
+    
   end
 
   # GET /words/new

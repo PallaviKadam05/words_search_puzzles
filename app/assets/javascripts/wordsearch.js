@@ -16,49 +16,50 @@
    * constructor
    */
   function WordSearch(wrapEl, settings) {
-     var now = new Date();
-     this.flag = false;
-     var timeup = now.setSeconds(now.getSeconds() + 60);
+//      var now = new Date();
+//      this.flag = false;
+//      var timeup = now.setSeconds(now.getSeconds() + 60);
      
-//var timeup = now.setHours(now.getHours() + 1);
-     //alert(score)
-    var time_counter = setInterval(function(){
-      var now = new Date();
-     var count = Math.round((timeup - now)/1000);
-     if (now > timeup) {
-     // window.location = "/logout"; //or somethin'
-     //alert(this.counter)
-    //alert("stop")
-     //alert(counter)
-     //alert(this.solved)
-     $(document).ready(function() {
-                   swal({ 
-                   title: "Ohh.....!",
-                   text: "Time Up",
-                   type: "info", 
-                   },
-                   function(){
+// //var timeup = now.setHours(now.getHours() + 1);
+//      //alert(score)
+//     var time_counter = setInterval(function(){
+//       var now = new Date();
+//      var count = Math.round((timeup - now)/1000);
+//      if (now > timeup) {
+//      // window.location = "/logout"; //or somethin'
+//      //alert(this.counter)
+//     //alert("stop")
+//      //alert(counter)
+//      //alert(this.solved)
+//      $(document).ready(function() {
+//                    swal({ 
+//                    title: "Ohh.....!",
+//                    text: "Time Up",
+//                    type: "info", 
+//                    },
+//                    function(){
    
-                    document.location.reload();
-                   });
+//                     document.location.reload();
+//                    });
 
-     });
-     // alert("Time Up")
+//      });
+//      // alert("Time Up")
      
-      clearInterval(time_counter);
-      window.clearInterval(tm);
-     // document.location.reload();
+//       clearInterval(time_counter);
+//       window.clearInterval(tm);
+//      // document.location.reload();
 
  
-     // this.lookup(this.selected);
+//      // this.lookup(this.selected);
      
 
-      return;
-    }
-    var seconds = Math.floor((count%60));
-    var minutes = Math.floor((count/60) % 60);
-   document.getElementById("timer").innerHTML = minutes + ":" + seconds;
-     }, 1000);
+//       return;
+//     }
+//     var seconds = Math.floor((count%60));
+//     var minutes = Math.floor((count/60) % 60);
+//    document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+//      }, 1000);
+
     
 
      //this.stop= time_counter;
@@ -75,7 +76,7 @@
     // Default settings
     var default_settings = {
       'directions': ['W', 'N', 'WN', 'EN'],
-      'gridSize': 10,
+      'gridSize': 12,
       'words': gon.words ,
 	    'wordsList' : [],
       'debug': false
@@ -422,7 +423,8 @@
         } 
 
            //Game over?
-      if(this.solved == this.settings.words.length){
+           
+      if(this.solved == this.settings.words.length  ){
         var score=this.settings.words.length
       	//alert("Score is" + score);
         console.log("Score" +score);
@@ -434,14 +436,16 @@
         //Update Data each time
         
         //window.clearInterval(tm);
+        var level_value = document.getElementById("level_value").textContent;
     window.clearInterval(this.time_counter);
       var player_time = document.getElementById("countdown2").textContent;
 
      console.log(player_time)
      var h_id=document.getElementById("p1").textContent;
+
     $.ajax({
       url: "/histories/"+h_id, 
-      data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
+      data: { "score": this.solved*level_value, "player_time": player_time, "solved_words_count": this.solved }, 
       dataType: "json",
       type: 'PATCH',
       success: function (data) {
@@ -483,10 +487,11 @@
     window.clearInterval(this.stop);
         var player_time = document.getElementById("countdown2").textContent;
      console.log(player_time)
+     var level_value = document.getElementById("level_value").textContent;
       var h_id=document.getElementById("p1").textContent;
     $.ajax({
       url: "/histories/"+h_id, 
-      data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
+      data: { "score": this.solved*level_value , "player_time": player_time, "solved_words_count": this.solved }, 
       dataType: "json",
       type: 'PATCH',
       success: function (data) {
@@ -537,7 +542,7 @@ WordSearch.prototype.gameOver = function() {
     window.clearInterval(this.stop);
     
      var score=this.settings.words.length
-     
+     var level_value = document.getElementById("level_value").textContent;
      var player_time = document.getElementById("countdown2").textContent;
      console.log(player_time)
 
@@ -546,13 +551,13 @@ WordSearch.prototype.gameOver = function() {
 
     $.ajax({
       url: "/histories/"+h_id, 
-      data: { "score": this.solved , "player_time": player_time, "solved_words_count": this.solved }, 
+      data: { "score": score*level_value , "player_time": player_time, "solved_words_count": this.solved }, 
       dataType: "json",
       type: 'PATCH',
       success: function (data) {
       //alert("Updated")
         console.log(data);
-        document.getElementById("scores").innerHTML = this.solved
+        //document.getElementById("scores").innerHTML = this.solved
       },
       error:function(){
 
