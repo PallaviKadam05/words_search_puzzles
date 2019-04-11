@@ -15,7 +15,9 @@
  <%= select_tag :category, options_for_select(Word.select(:category).pluck(:category)) , id: "category-select" , prompt: 'Select Category' %>
  </div>
  <% end %>
+
 </div>
+
 </div>
 <div class="row hide" id="history">
   <div class="side">
@@ -31,6 +33,7 @@
 
         
          <th>Word Category</th>
+         <th>Word Game Level</th>
          <th>Score</th>
          <th>Time</th>
          <th>Date</th>
@@ -44,9 +47,10 @@
       <tr>
        
          <td><%= history.word.category %></td>
+         <td><%= history.level %></td>
          <td><%= history.score %></td>
          <td><%= history.player_time %></td>
-         <td><%= history.created_at %></td>
+         <td><%= history.created_at.strftime("%b %d, %Y") %></td>
       </tr>
     
     <% end %>
@@ -79,7 +83,7 @@
   <button onclick="" class="hide btn btn-lg btn-primary" id="help" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign"></span>  Help</button>
   <br /><br />
   <button onclick="high_score()" class="btn btn-lg btn-primary" id="score" data-toggle="modal" data-target="#high_score"><span class="glyphicon glyphicon-king"></span> High Score</button>
-   <p id="high"> series: <%= @high_scores.to_json %> </p><br/><br>
+   <!-- <p id="high"> series: <%= @high_scores.to_json %> </p> --><br/><br>
   <br /><br />
 
   <button onclick="document.location.reload();" class="hide btn btn-lg btn-warning" id="back"><span class="glyphicon glyphicon-hand-left"></span>  Back</button>
@@ -103,6 +107,7 @@
        1).<br />
        2).
       </div>
+      
 
       <!-- Modal footer -->
       <div class="modal-footer">
@@ -127,35 +132,46 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <table class="table table-hover table-sm jumbotron-history">
+
+         <div class="card-header tab-card-header">
+          <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">High Level</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Medium Level</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false">Low Level</a>
+            </li>
+          </ul>
+        </div>
+         <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+            <h5 class="card-title">High level Scores</h5>
+            <p class="card-text">
+
+        <table class="table table-hover table-sm jumbotron-history" id="display">
                         <!--Table head-->
-       <thead style="background-color:#C0C0C0;">
-        <tr class="text-white">
+       
+</table></p>
+                       
+          </div>
+          <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
+            <h5 class="card-title">Medium level Scores</h5>
+            <p class="card-text">table</p>
+                        
+          </div>
+          <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
+            <h5 class="card-title">Low level Scores</h5>
+            <p class="card-text">tables</p>
+                         
+          </div>
 
-         <!-- <th>Name</th>
-         <th>Word Category</th> -->
-         <th>Score</th>
-         <th>Time</th>
-         <th>Date</th>
-         <th colspan="3"></th>
-        </tr>
-       </thead>
+        </div>
 
-  <tbody>
-  <% @high_scoress.each do |history| %>
-  
-          <tr>
-         
-         <td><%= history.score %></td>
-         <td><%= history.player_time %></td>
-         <td><%= history.created_at %></td>
-      </tr>
-    
-    
-    
-     <% end %>
-  </tbody>
-</table>
+
+
 
       </div>
 
@@ -444,11 +460,21 @@ function high_score(){
         data: {"word_id" : gon.word_id } , 
         success: function(data){
           alert("success")
-          console.log(data)
-          alert(data)
-          alert(JSON.stringify(data));
-          var high=JSON.stringify(data)
-          console.log(high)
+          //console.log(data)
+          //alert(data)
+          //alert(JSON.stringify(data));
+          //var high=JSON.stringify(data)
+          //console.log(high)
+          // var data=JSON.stringify(data)
+           console.log(data)
+          $.each(data, function(key, val) {
+    var tr=$('<tr>name</tr>');
+    $.each(val, function(k, v){
+        $('<td>'+v+'</td>').appendTo(tr);
+    });
+    tr.appendTo('#display');
+    //$("#display").html(null)
+});
 
 
 
@@ -461,5 +487,8 @@ function high_score(){
 //alert(gon.word_id)
 
 }
+// $("body").on("dblclick", "#score", function(event){
+//          $("#display").empty();
+//      });
 </script>
 

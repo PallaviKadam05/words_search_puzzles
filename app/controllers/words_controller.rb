@@ -7,26 +7,32 @@ class WordsController < ApplicationController
   # GET /words.json
   def index
    @histories=History.limit(5).order('created_at DESC')
+   #binding.pry
+   @high_scores=History.order("score DESC").limit(2)#.where(word_id: session[:select_id])
+   #session[:select_id] = nil
 
-   @high_scoress=History.order("score DESC").limit(2).where(word_id: params[:word_id])
     #params[:scores]
-   #@high_scoress = params[:high_scores]
+    #@high_scoress = params[:high_scores]
+    #render json: @high_scores
     respond_to do |format|
       format.html
       format.js{}
     end
-  
+   
      
   end
 
   # GET /words/1
   # GET /words/1.json
   def show
+  #@high_score=History.order("score DESC").limit(2).where(word_id: @data.id)
+
   end
 
   def fetch_words
     
-    gon.words = Word.where(category: params[:select_val]).pluck(:words_search).flatten
+    words_list = Word.where(category: params[:select_val]).limit(2).order("RAND()").pluck(:words_search).flatten
+    gon.words=words_list.shuffle[0...10]
     @data = Word.where(category: params[:select_val]).first
     session[:id]=@data.id
     gon.word_id=@data.id
@@ -45,16 +51,22 @@ class WordsController < ApplicationController
     end
   end
   def high_scores
-     @high_scores=History.order("score DESC").limit(2).where(word_id: params[:word_id])
-     #render json: @high_scores
-      respond_to do |format|
-        format.html
-        format.json { render json: @high_scores, status: :ok } #?????
-    end
-    respond_to do |format|
-    format.js
-    format.html { redirect_to index_action_path(params[:word_id]) }
-  end
+    #binding.pry
+    @high_scores=History.order("score DESC").limit(2).where(word_id: params[:word_id])
+    render json: @high_scores
+    #   respond_to do |format|
+    #     format.html
+    #     format.json { render json: @high_scores, status: :ok } 
+    # end
+    #binding.pry
+   #session[:select_id] = params[:word_id]
+   # @id=params[:word_id]
+  #   respond_to do |format|
+  #   format.js
+  #   format.html { redirect_to words_path }
+
+  # end
+  
    # redirect_to index_action_path(passed_parameter: params[:word_id])
     
   end

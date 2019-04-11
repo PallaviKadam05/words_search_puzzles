@@ -62,7 +62,7 @@
 
     
 
-     //this.stop= time_counter;
+//      this.stop= time_counter;
  
     this.wrapEl = wrapEl;
 

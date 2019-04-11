@@ -17,6 +17,7 @@
 
         
         <th>Word Category</th>
+        <th>Word Game Level</th>
         <th>Score</th>
         <th>Time</th>
         <th>Date</th>
@@ -30,9 +31,10 @@
       <tr>
        
          <td><%= history.word.category %></td>
+         <td><%= history.level %></td>
          <td><%= history.score %></td>
          <td><%= history.player_time %></td>
-         <td><%= history.created_at %></td>
+         <td><%= history.created_at.strftime("%b %d, %Y") %></td>
         
   
       
