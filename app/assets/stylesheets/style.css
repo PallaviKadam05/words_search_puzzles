@@ -121,7 +121,7 @@ select::-ms-expand {
 }*/
 
 .tab-card-header {
-  background:none;
+  background:moccasin;
 }
 /* Default mode */
 .tab-card-header > .nav-tabs {
@@ -142,6 +142,7 @@ select::-ms-expand {
 .tab-card-header > .nav-tabs > li > a.show {
     border-bottom:2px solid #007bff;
     color: #007bff;
+    background: #c99393;
 }
 .tab-card-header > .nav-tabs > li > a:hover {
     color: #007bff;
@@ -260,9 +261,10 @@ for font-size and font-family*/
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;*/
-      background-image:url("background.jpg");
+      background: navajowhite
+      /*background-image:url("background.jpg");
       background-repeat: no-repeat;
-      background-size: cover
+      background-size: cover*/
 }
 .jumbotron-history{
     /*background-image:url("word-search-logo.png") no-repeat center center fixed; 

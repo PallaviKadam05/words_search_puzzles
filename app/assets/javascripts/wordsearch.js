@@ -461,7 +461,7 @@
       }
       });
     
-      document.getElementById("scores").innerHTML = this.solved;
+      document.getElementById("scores").innerHTML = this.solved*level_value;
     
 
       }

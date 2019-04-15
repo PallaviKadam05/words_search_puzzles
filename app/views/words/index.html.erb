@@ -7,13 +7,14 @@
 <div id="first">
  <%= form_tag('/word') do %>
  <!-- <p id="msg"> To Start Game Please Select Category which you want....!</p><br />  -->
- <div class="alert alert-danger" id="msg">
+ <div class="alert alert-success" id="msg">
     <strong>To Start Game Please Select Category which you want....!
     </strong> 
   </div><br /><br /><br /><br/>
  <div id="demo" class="select center-on-page">
  <%= select_tag :category, options_for_select(Word.select(:category).pluck(:category)) , id: "category-select" , prompt: 'Select Category' %>
- </div>
+
+  </div>
  <% end %>
 
 </div>
@@ -82,7 +83,7 @@
   <button onclick="start_game('levels');" class="hide btn btn-lg btn-success" id="start" disabled >Lets Start Game  <span class="glyphicon glyphicon-hand-right"></span></button><br /><br />
   <button onclick="" class="hide btn btn-lg btn-primary" id="help" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign"></span>  Help</button>
   <br /><br />
-  <button onclick="high_score()" class="btn btn-lg btn-primary" id="score" data-toggle="modal" data-target="#high_score"><span class="glyphicon glyphicon-king"></span> High Score</button>
+  <button onclick="" class="btn btn-lg btn-primary" id="score" data-toggle="modal" data-target="#high_score"><span class="glyphicon glyphicon-king"></span> High Score</button>
    <!-- <p id="high"> series: <%= @high_scores.to_json %> </p> --><br/><br>
   <br /><br />
 
@@ -112,6 +113,7 @@
       <!-- Modal footer -->
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
       </div>
 
     </div>
@@ -126,45 +128,86 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">High Scores</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Scores</h4>
+        <button type="button" class="close" data-dismiss="modal" onclick="$('#display').html(null);$('#display_medium').html(null);$('#display_low').html(null);">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
 
-         <div class="card-header tab-card-header">
-          <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">High Level</a>
+         <div class="card-header tab-card-header primary">
+         <ul class="nav nav-tabs card-header-tabs " id="tabs" role="tablist" style="background-color: orange;">
+            <li class="nav-item" >
+                <a class="nav-link" id="one-tab" data-toggle="tab" href="#tab-High" role="tab" aria-controls="One" aria-selected="true">High </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Medium Level</a>
+                <a class="nav-link" id="two-tab" data-toggle="tab" href="#tab-Medium" role="tab" aria-controls="Two" aria-selected="false">Medium </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false">Low Level</a>
+                <a class="nav-link" id="three-tab" data-toggle="tab" href="#tab-Low" role="tab" aria-controls="Three" aria-selected="false">Low</a>
             </li>
           </ul>
         </div>
          <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+          <div class="tab-pane fade show active p-3" id="tab-High" role="tabpanel" aria-labelledby="one-tab">
             <h5 class="card-title">High level Scores</h5>
             <p class="card-text">
 
         <table class="table table-hover table-sm jumbotron-history" id="display">
+           <thead>
+          <tr class="text-white">
+
+        
+         <th>Player Name</th>
+        
+         <th>Score</th>
+        
+         <th>Date</th>
+         <th colspan="3"></th>
+        </tr>
+         </thead>
                         <!--Table head-->
        
 </table></p>
                        
           </div>
-          <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
+          <div class="tab-pane fade p-3" id="tab-Medium" role="tabpanel" aria-labelledby="two-tab">
             <h5 class="card-title">Medium level Scores</h5>
-            <p class="card-text">table</p>
+            <p class="card-text">
+        <table class="table table-hover table-sm jumbotron-history" id="display_medium">
+          <tr class="text-white">
+
+        
+         <th>Player Name</th>
+        
+         <th>Score</th>
+        
+         <th>Date</th>
+         <th colspan="3"></th>
+        </tr>
+                        <!--Table head-->
+       
+</table></p>
                         
           </div>
-          <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
+          <div class="tab-pane fade p-3" id="tab-Low" role="tabpanel" aria-labelledby="three-tab">
             <h5 class="card-title">Low level Scores</h5>
-            <p class="card-text">tables</p>
+            <p class="card-text">
+        <table class="table table-hover table-sm jumbotron-history" id="display_low">
+          <tr class="text-white">
+
+        
+         <th>Player Name</th>
+        
+         <th>Score</th>
+        
+         <th>Date</th>
+         <th colspan="3"></th>
+        </tr>
+                        <!--Table head-->
+       
+       </table>
+     </p>
                          
           </div>
 
@@ -177,7 +220,7 @@
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('#display').html(null);$('#display_medium').html(null);$('#display_low').html(null);">Close</button> 
       </div>
 
     </div>
@@ -204,9 +247,12 @@
         </button>
        
     </div>
- <button type="button" class=" next-pause btn btn-danger btn-circle btn-xl" onclick="pause()" ><span class="glyphicon glyphicon-pause"></span>  
+ <button type="button" class=" next-pause btn btn-danger btn-circle btn-xl" onclick="pause()" id="pause"><span class="glyphicon glyphicon-pause"></span>  
         </button>
 </div>
+
+<!-- <span id="timer"></span> -->
+<span id="countTimers" class="hide"></span>
 
 
  <!-- <i class="fas fa-home"></i> -->
@@ -222,6 +268,7 @@
   </div>
 
     <script type="text/javascript">
+   
       function enableButton()
       {
       var selectelevel = document.getElementById('levels');
@@ -292,55 +339,8 @@
     
   });
   function start_game() {
-     var now = new Date();
-     this.flag = false;
-     var timeup = now.setSeconds(now.getSeconds() + 60);
-     
-//var timeup = now.setHours(now.getHours() + 1);
-     //alert(score)
-    var time_counter = setInterval(function(){
-      var now = new Date();
-     var count = Math.round((timeup - now)/1000);
-     if (now > timeup) {
-     // window.location = "/logout"; //or somethin'
-     //alert(this.counter)
-    //alert("stop")
-     //alert(counter)
-     //alert(this.solved)
-     $(document).ready(function() {
-                   swal({ 
-                   title: "Ohh.....!",
-                   text: "Time Up",
-                   type: "info", 
-                   },
-                   function(){
+    initCountdown();
    
-                    document.location.reload();
-                   });
-
-     });
-     // alert("Time Up")
-     
-      clearInterval(time_counter);
-      window.clearInterval(tm);
-     // document.location.reload();
-
- 
-     // this.lookup(this.selected);
-     
-
-      return;
-    }
-    var seconds = Math.floor((count%60));
-    var minutes = Math.floor((count/60) % 60);
-   document.getElementById("timer").innerHTML = minutes + ":" + seconds;
-     }, 1000);
-
-    
-
-     this.stop= time_counter;
-    alert(gon.word_id)
-    // console.log(data.scors)
    let timerInterval
       Swal.fire({
       timer: 2000,
@@ -360,26 +360,26 @@
     result.dismiss === Swal.DismissReason.timer
   ) {
     // console.log('I was closed by the timer')
-  var input = {
-              year: 0,
-              month: 0,
-              day: 0,
-              hours: 0,
-              minutes: 0,
-              seconds: 0
-          };
+  // var input = {
+  //             year: 0,
+  //             month: 0,
+  //             day: 0,
+  //             hours: 0,
+  //             minutes: 0,
+  //             seconds: 0
+  //         };
           
 
-         var timestamp = new Date(input.year, input.month, input.day,
-         input.hours, input.minutes, input.seconds);
+  //        var timestamp = new Date(input.year, input.month, input.day,
+  //        input.hours, input.minutes, input.seconds);
 
-         var interval = 1;
+  //        var interval = 1;
 
 
-        tm=setInterval(function () {
-        timestamp = new Date(timestamp.getTime() + interval * 1000);
-        document.getElementById('countdown2').innerHTML =  timestamp.getMinutes() + ':' + timestamp.getSeconds() ;
-         }, Math.abs(interval) * 1000);
+  //       tm=setInterval(function () {
+  //       timestamp = new Date(timestamp.getTime() + interval * 1000);
+  //       document.getElementById('countdown2').innerHTML =  timestamp.getMinutes() + ':' + timestamp.getSeconds() ;
+  //        }, Math.abs(interval) * 1000);
   }
 })
           var gameAreaEl = document.getElementById('ws-area');
@@ -436,46 +436,103 @@
 }
 
 
-function pause(){
-  //alert("")
-  //window.clearInterval(time_counter);
- clearTimeout(time_counter);
-  swal({
-  title: "Sweet!",
-  text: "Here's a custom image.",
-  imageUrl: 'thumbs-up.jpg',
-  buttonText: "Continue"
-});
-  
-  
-}
-function high_score(){
-  // console.log(gon.word_id)
-  // console.log(gon.high_scores)
-  $.ajax({
+
+//function high_score(){
+  $('#tabs').on("click", "li", function (event) {         
+   var activeTab = $(this).find('a').attr('href').split('-')[1];
+    //alert(activeTab);
+    $('#tabs').addClass("primary");
+
+   //FurtherProcessing(activeTab);
+   if(activeTab=='High')
+   {
+     $.ajax({
         
         url:"words/high_scores",
         type:'GET',
         dataType: "json",
-        data: {"word_id" : gon.word_id } , 
+        data: {"word_id" : gon.word_id  } , 
         success: function(data){
-          alert("success")
-          //console.log(data)
-          //alert(data)
-          //alert(JSON.stringify(data));
-          //var high=JSON.stringify(data)
-          //console.log(high)
-          // var data=JSON.stringify(data)
-           console.log(data)
-          $.each(data, function(key, val) {
-    var tr=$('<tr>name</tr>');
-    $.each(val, function(k, v){
-        $('<td>'+v+'</td>').appendTo(tr);
-    });
-    tr.appendTo('#display');
-    //$("#display").html(null)
-});
+          //alert("!st success")
+          
+          //alert(JSON.stringify(data.scores_high))
+          //alert(JSON.stringify(data.names_high))
+          //dataname=JSON.stringify(data.name)
+         //alert(data.scores)
+          //console.log(dataname)
+           $('#display_medium').html(null);
+          $('#display_low').html(null);
 
+          for(let i = 0; i < data.names_high.length; i++){
+            for(let i = 0; i < data.scores_high.length; i++){
+              for(let i = 0; i < data.player_dates_high.length; i++){
+           var tr=$('<tr></tr>');
+           console.log(data.names_high[i]);
+            $('<td>'+data.names_high[i]+'</td>').appendTo(tr);
+            $('<td>'+data.scores_high[i]+'</td>').appendTo(tr);
+            $('<td>'+data.player_dates_high[i]+'</td>').appendTo(tr);
+             tr.appendTo('#display');
+
+          }
+           break;
+         }
+           break;
+        }
+           console.log(data)
+         
+        
+
+
+
+       },
+       error:function(){alert("error")
+       },
+     })
+   }
+   else{
+    
+   
+   if(activeTab=='Medium')
+   {
+    $.ajax({
+      
+      
+        url:"words/high_scores",
+        type:'GET',
+        dataType: "json",
+        data: {"word_id" : gon.word_id  } , 
+        success: function(data){
+          //alert("2ndsuccess")
+          
+         // alert(JSON.stringify(data.scores_medium))
+          //alert(JSON.stringify(data.names_medium))
+          
+          $('#display').html(null);
+       
+          $('#display_low').html(null);
+
+          for(let i = 0; i < data.names_medium.length; i++){
+            for(let i = 0; i < data.scores_medium.length; i++){
+              for(let i = 0; i < data.player_dates_medium.length; i++){
+                for(let i = 0; i < data.scores_medium.length; i++){
+           var tr=$('<tr></tr>');
+           
+            $('<td>'+data.names_medium[i]+'</td>').appendTo(tr);
+            $('<td>'+data.scores_medium[i]+'</td>').appendTo(tr);
+            $('<td>'+data.player_dates_medium[i]+'</td>').appendTo(tr);
+            
+             tr.appendTo('#display_medium');
+
+          }
+           break;
+         }
+           break;
+        }
+         break;
+        }
+           console.log(data)
+         
+        
 
 
 
@@ -484,11 +541,487 @@ function high_score(){
        },
      })
 
-//alert(gon.word_id)
+   }
+   else{
+   
+   if(activeTab=='Low')
+   {
+        $.ajax({
+      
+      
+        url:"words/high_scores",
+        type:'GET',
+        dataType: "json",
+        data: {"word_id" : gon.word_id  } , 
+        success: function(data){
+          //alert("3rd success")
+          
+          //alert(JSON.stringify(data.scores_low))
+          //alert(JSON.stringify(data.names_low))
+          
+          $('#display').html(null);
+          $('#display_medium').html(null);
+          for(let i = 0; i < data.names_low.length; i++){
+            for(let i = 0; i < data.scores_low.length; i++){
+              for(let i = 0; i < data.player_dates_low.length; i++){
+                for(let i = 0; i < data.scores_low.length; i++){
+           var tr=$('<tr></tr>');
+          
+            $('<td>'+data.names_low[i]+'</td>').appendTo(tr);
+            $('<td>'+data.scores_low[i]+'</td>').appendTo(tr);
+            $('<td>'+data.player_dates_low[i]+'</td>').appendTo(tr);
+            
+             tr.appendTo('#display_low');
+
+          }
+           break;
+         }
+           break;
+        }
+         break;
+        }
+           console.log(data)
+         
+        
+
+
+
+       },
+       error:function(){alert("error")
+       },
+     })
+   }
+ }
+}
+   // else{
+   //  $('#display_low').html(null);
+   // }
+ 
+});
+
+     // $.ajax({
+      
+      
+     //    url:"words/high_scores",
+     //    type:'GET',
+     //    dataType: "json",
+     //    data: {"word_id" : gon.word_id  } , 
+     //    success: function(data){
+     //      alert("success")
+          
+     //      alert(JSON.stringify(data.scores))
+     //      alert(JSON.stringify(data.name))
+     //      dataname=JSON.stringify(data.name)
+     //     alert(data.scores)
+     //      console.log(dataname)
+     //      $('#display').html(null);
+        
+     //      for(let i = 0; i < data.name.length; i++){
+     //        for(let i = 0; i < data.scores.length; i++){
+     //          for(let i = 0; i < data.player_dates.length; i++){
+     //       var tr=$('<tr></tr>');
+     //       console.log(data.name[i]);
+     //        $('<td>'+data.name[i]+'</td>').appendTo(tr);
+     //        $('<td>'+data.scores[i]+'</td>').appendTo(tr);
+     //        $('<td>'+data.player_dates[i]+'</td>').appendTo(tr);
+     //         tr.appendTo('#display_medium');
+
+     //      }
+     //       break;
+     //     }
+     //       break;
+     //    }
+     //       console.log(data)
+         
+        
+
+
+
+     //   },
+     //   error:function(){alert("error")
+     //   },
+     // })
+
+
+//}
+function initCountdown() {
+   var input = {
+              year: 0,
+              month: 0,
+              day: 0,
+              hours: 0,
+              minutes: 0,
+              seconds: 0
+          };
+          
+
+         var timestamp = new Date(input.year, input.month, input.day,
+         input.hours, input.minutes, input.seconds);
+
+         var interval_time = 1;
+
+
+        tm=setInterval(function () {
+        timestamp = new Date(timestamp.getTime() + interval_time * 1000);
+        document.getElementById('countdown2').innerHTML =  timestamp.getMinutes() + ':' + timestamp.getSeconds() ;
+         }, Math.abs(interval_time) * 1000);
+
+var level=document.getElementById("level_name").textContent;
+   //alert(level);
+   if (level=='High')
+   {
+  function event_click( event ){
+    
+    
+
+    if( interval === null ){
+      
+      start();
+      //event.target.innerText = 'pause';
+        //alert('');
+ 
+     
+    } else {
+      
+      pause();
+      //event.target.innerText = 'start';
+       $(document).ready(function() {
+                    swal({ 
+                    title: "Game is Paused!",
+                    text: "Click Ok to play the Game",                    
+                    type: "info", 
+                   },
+                    function(){
+   
+                    start();
+      
+                   });
+
+     });
+    
+      
+    }
+    
+  }
+  
+  function start(){
+    
+    // First use pause() to be sure all intervals are cleared
+    // it prevents them from doubling up
+    
+    pause();
+    interval = setInterval( count, 1000 );
+    
+  }
+  function pause() {
+    //clearInterval(tm)
+    clearInterval( interval );
+    interval = null;
+    
+  }
+  function count(){
+    
+    // By doing this before declaring your variables
+    // you make it so the variables actually hold the new calculated values.
+    
+    time[2]--;
+    
+    if( time[2] == -1 ){
+    
+      time[1]--;
+      time[2] = 59;
+      
+    }
+    
+    // Lets use some cool new syntax here to reduce the amount of code needed
+    // this will destructure an array assigning their indexed values to the index of the variable
+    
+    var [ hours, minutes, seconds ] = time;
+
+    if( seconds == 0 && minutes == 0 && hours == 0 ){
+    
+      clearInterval( interval );
+       $(document).ready(function() {
+                    swal({ 
+                    title: "Ohh.....!",
+                    text: "Time Up",                    
+                    type: "info", 
+                   },
+                    function(){
+   
+                    document.location.reload();
+                   });
+
+     });
+      
+    }
+    
+    // We always want to print something, and if the values are 0
+    // the output is still the same, so lets seperate that.
+    
+    if (seconds < 10) {
+    
+      outputElement.innerHTML = minutes + ": " + "0" + seconds + " ";
+      
+    } else {
+    
+      outputElement.innerHTML = minutes + ": " + seconds + " ";
+      
+    }
+    
+  }
+  
+  // Lets also clearly name our things.
+  
+  var outputElement = document.getElementById('timer');
+  var toggleElement = document.getElementById('pause');
+  var interval =null;
+  var time = [0,0,30];
+
+  // Add event listener once
+  
+  toggleElement.addEventListener( 'click', event_click );
+
+  toggleElement.click();
+   //alert('');
+  }
+else if(level=='Low')
+   {
+  function event_click( event ){
+    
+    
+
+    if( interval === null ){
+      
+      start();
+      //event.target.innerText = 'pause';
+        //alert('');
+ 
+     
+    } else {
+      
+      pause();
+      //event.target.innerText = 'start';
+       $(document).ready(function() {
+                    swal({ 
+                    title: "Game is Paused!",
+                    text: "Click Ok to play the Game",                    
+                    type: "info", 
+                   },
+                    function(){
+   
+                    start();
+      
+                   });
+
+     });
+      
+    
+    }
+    
+  }
+  
+  function start(){
+    
+    // First use pause() to be sure all intervals are cleared
+    // it prevents them from doubling up
+    
+    pause();
+    interval = setInterval( count, 1000 );
+    
+  }
+  function pause() {
+    //clearInterval(tm)
+    clearInterval( interval );
+    interval = null;
+    
+  }
+  function count(){
+    
+    // By doing this before declaring your variables
+    // you make it so the variables actually hold the new calculated values.
+    
+    time[2]--;
+    
+    if( time[2] == -1 ){
+    
+      time[1]--;
+      time[2] = 59;
+      
+    }
+    
+    // Lets use some cool new syntax here to reduce the amount of code needed
+    // this will destructure an array assigning their indexed values to the index of the variable
+    
+    var [ hours, minutes, seconds ] = time;
+
+    if( seconds == 0 && minutes == 0 && hours == 0 ){
+    
+      clearInterval( interval );
+       $(document).ready(function() {
+                    swal({ 
+                    title: "Ohh.....!",
+                    text: "Time Up",                  
+                    type: "info", 
+                   },
+                    function(){
+   
+                    document.location.reload();
+                   });
+
+     });
+      
+    }
+    
+    // We always want to print something, and if the values are 0
+    // the output is still the same, so lets seperate that.
+    
+    if (seconds < 10) {
+    
+      outputElement.innerHTML = minutes + ": " + "0" + seconds + " ";
+      
+    } else {
+    
+      outputElement.innerHTML = minutes + ": " + seconds + " ";
+      
+    }
+    
+  }
+  
+  // Lets also clearly name our things.
+  
+  var outputElement = document.getElementById('timer');
+  var toggleElement = document.getElementById('pause');
+  var interval =null;
+  var time = [0,1,30];
+
+  // Add event listener once
+  
+  toggleElement.addEventListener( 'click', event_click );
+
+  toggleElement.click();
+   
+  }
+
+else 
+{
+
+
+  function event_click( event ){
+    
+    
+
+    if( interval === null ){
+      
+      start();
+      //event.target.innerText = 'pause';
+        //alert('');
+ 
+     
+    } else {
+      
+      pause();
+      //event.target.innerText = 'start';
+        $(document).ready(function() {
+                     swal({ 
+                    title: "Game is Paused!",
+                    text: "Click Ok to play the Game",                    
+                    type: "info", 
+                   },
+                    function(){
+   
+                   start();
+                   });
+
+     });
+    
+      
+    }
+    
+  }
+  
+  function start(){
+    
+    // First use pause() to be sure all intervals are cleared
+    // it prevents them from doubling up
+    
+    pause();
+    interval = setInterval( count, 1000 );
+    
+  }
+  function pause() {
+    //clearInterval(tm)
+    clearInterval( interval );
+    interval = null;
+    
+  }
+  function count(){
+    
+    // By doing this before declaring your variables
+    // you make it so the variables actually hold the new calculated values.
+    
+    time[2]--;
+    
+    if( time[2] == -1 ){
+    
+      time[1]--;
+      time[2] = 59;
+      
+    }
+    
+    // Lets use some cool new syntax here to reduce the amount of code needed
+    // this will destructure an array assigning their indexed values to the index of the variable
+    
+    var [ hours, minutes, seconds ] = time;
+
+    if( seconds == 0 && minutes == 0 && hours == 0 ){
+    
+      clearInterval( interval );
+       $(document).ready(function() {
+                    swal({ 
+                    title: "Ohh.....!",
+                    text: "Time Up",                    
+                    type: "info", 
+                   },
+                    function(){
+   
+                    document.location.reload();
+                   });
+
+     });
+      
+    }
+    
+    // We always want to print something, and if the values are 0
+    // the output is still the same, so lets seperate that.
+    
+    if (seconds < 10) {
+    
+      outputElement.innerHTML = minutes + ": " + "0" + seconds + " ";
+      
+    } else {
+    
+      outputElement.innerHTML = minutes + ": " + seconds + " ";
+      
+    }
+    
+  }
+  
+  // Lets also clearly name our things.
+  
+  var outputElement = document.getElementById('timer');
+  var toggleElement = document.getElementById('pause');
+  var interval =null;
+  var time = [0,0,60];
+
+  // Add event listener once
+  
+  toggleElement.addEventListener( 'click', event_click );
+
+  toggleElement.click();
 
 }
-// $("body").on("dblclick", "#score", function(event){
-//          $("#display").empty();
-//      });
+
+}
 </script>
 

@@ -52,8 +52,60 @@ class WordsController < ApplicationController
   end
   def high_scores
     #binding.pry
-    @high_scores=History.order("score DESC").limit(2).where(word_id: params[:word_id])
-    render json: @high_scores
+    @names_high = []
+    @score_high = []
+    @player_dates_high = []
+    @level_high = []
+    @high_scores_high=History.order("score DESC").limit(2).where(word_id: params[:word_id], level: 'High')
+    @scores_high=@high_scores_high.each do |history|
+         @names_high << history.user.name
+         @score_high << history.score
+         @level_high << history.level
+        @player_dates_high << history.created_at.strftime("%b %d, %Y")
+    
+    end 
+    @names_medium = []
+    @score_medium = []
+    @level_medium = []
+    @player_dates_medium = []
+    @high_scores_medium=History.order("score DESC").limit(2).where(word_id: params[:word_id], level: 'Medium')
+    @scores_medium=@high_scores_medium.each do |history|
+         @names_medium << history.user.name
+         @score_medium << history.score
+         @level_medium << history.level
+        @player_dates_medium << history.created_at.strftime("%b %d, %Y")
+    
+    end 
+     @names_low = []
+    @score_low = []
+    @level_low = []
+    @player_dates_low = []
+    @high_scores_low=History.order("score DESC").limit(2).where(word_id: params[:word_id], level: 'Low')
+    @scores_low=@high_scores_low.each do |history|
+         @names_low << history.user.name
+         @score_low << history.score
+         @level_low << history.level
+        @player_dates_low << history.created_at.strftime("%b %d, %Y")
+    
+    end 
+
+
+
+    # @hash=Hash[@high_scores.map{|l| ["name",l.user.name]}]
+    
+    respond_to do |format|
+    format.json  { render :json => {:scores_high => @score_high,
+                                    :player_dates_high => @player_dates_high,
+                                    :names_high => @names_high,
+                                    :scores_medium => @score_medium,
+                                    :player_dates_medium => @player_dates_medium,
+                                    :names_medium => @names_medium,
+                                    :scores_low => @score_low,
+                                    :player_dates_low => @player_dates_low,
+                                    :names_low => @names_low}} 
+    end
+     
+    # render json: @high_scores
     #   respond_to do |format|
     #     format.html
     #     format.json { render json: @high_scores, status: :ok } 
