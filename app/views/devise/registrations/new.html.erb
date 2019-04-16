@@ -1,42 +1,245 @@
-<h2>Sign up</h2>
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-heading">
-        <h2 class="text-center">Sign up</h2>
+        <h2 class="text-center"> <font color="black">Sign up for your free account
+
+</h2> </font>
       </div>
       <div class="modal-body">
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
+<div class="inputWithIcon">
 <div class="field">
-  <%= f.label :name %><br />
-  <%= f.text_field :name %>
+  <div align="middle">
+  
+   <%= f.text_field:name, autofocus: true, autocomplete: "username" ,class:"username",placeholder:"Username" %>
+
+
+<i class="fa fa-user" aria-hidden="true"></i>
+</div>
+</div>
+</div>
+  <div class="field">
+    <div align="middle">
+    
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class:"email",placeholder:"email" %>
+  </div>
 </div>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
+    <div align="middle">
+ 
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+   <%= f.password_field :password, autocomplete: "current-password" ,class:"password",placeholder:"password" %>
   </div>
-
+</div>
   <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div align="middle">
+ 
+    <%= f.password_field :password_confirmation, autocomplete: "current-password" ,class:"pass",placeholder:"password_confirmation" %>
+</div>
+</div>
+    <div class="actions ">
+     <div align="middle">
 
-  <div class="actions">
-    <%= f.submit "Sign up" , class:"btn btn-success btn-lg" %>
+   <%= f.submit "Sign Up" , class:"btn btn-success btn-lg" ,id:"btn" %>
+ 
   </div>
+</div>
+ <div align="middle">
+ 
+ <a target="_blank" href="http://localhost:3000/users/sign_in"><p><font color="blue"> Already have an account? Login</font></p></a>
+ </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+ <hr>
+  <div align= "center"> <font color="blue"> Or login in with
+</div> </font>
+<div class="field">
+ <div align="middle">
+
+<div class="div1"> <%= link_to "auth/google_oauth2" do %> <font color="white">Continue With Google</font> <%= image_tag('google.png',width: '40',height: '40') %> <%end%></div>
+</div>
+</div>
+</br>
+<div class="field">
+      <div align="middle">
+
+  <div class ="div2" >   <%= link_to "auth/google_oauth2" do %> <font color="white">Continue With Edmodo </font><%= image_tag('edmodo.png',width: '40',height: '40') %> <%end%> </div>
+  </div>
+</div>
+      
+      <style type="text/css"> 
+.div1 {
+  background-color: red ;
+  width: 300px;
+  height: 50px;
+  border: 1px solid red;
+
+  box-sizing: border-box;
+}
+.div2 {
+  background-color: blue ;
+  width: 300px;
+  height: 50px;
+  border: 1px solid blue;
+  box-sizing: border-box;
+}
+.btn{
+  
+  color: white;
+   width: 300px;
+  height: 50px;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.username{
+   
+ 
+  display: flex;
+  margin: var(--formFieldMargin);
+
+
+   width: 300px;
+  height: 50px;
+  padding: 16px;
+  font-size: 16px;
+ border: black;
+  outline: blue;
+ border-bottom: 2px solid blue;
+  border-top: 2px solid blue;
+   border-left: 2px solid blue;
+    border-right: 2px solid blue;
+}
+.password{
+  
+  
+  display: flex;
+  margin: var(--formFieldMargin);
+
+
+   width: 300px;
+  height: 50px;
+  padding: 16px;
+  font-size: 16px;
+ border: black;
+  outline: blue;
+ border-bottom: 2px solid blue;
+  border-top: 2px solid blue;
+   border-left: 2px solid blue;
+    border-right: 2px solid blue;
+
+}
+.pass{
+   
+ 
+  display: flex;
+  margin: var(--formFieldMargin);
+
+
+   width: 300px;
+  height: 50px;
+  padding: 16px;
+  font-size: 16px;
+ border: black;
+  outline: blue;
+ border-bottom: 2px solid blue;
+  border-top: 2px solid blue;
+   border-left: 2px solid blue;
+    border-right: 2px solid blue;
+}
+.a {
+  text-decoration: none;
+  color:blue;
+}
+
+.email{
+
+ 
+  display: flex;
+  margin: var(--formFieldMargin);
+
+
+   width: 300px;
+  height: 50px;
+  padding: 16px;
+  font-size: 16px;
+ border: black;
+  outline: blue;
+ border-bottom: 2px solid blue;
+  border-top: 2px solid blue;
+   border-left: 2px solid blue;
+    border-right: 2px solid blue;
+}
+
+input[type="text"] {
+  width: 300px;
+  height: 50px;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  margin: 8px 0;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  transition: 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: dodgerBlue;
+  box-shadow: 0 0 8px 0 dodgerBlue;
+}
+
+.inputWithIcon input[type="text"] {
+  padding-left: 40px;
+}
+
+.inputWithIcon {
+  position: relative;
+}
+
+.inputWithIcon i {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  padding: 9px 8px;
+  color: #aaa;
+  transition: 0.3s;
+}
+
+.inputWithIcon input[type="text"]:focus + i {
+  color: dodgerBlue;
+}
+.email input[type="text"]:focus + i {
+  color: dodgerBlue;
+}
+
+    </style>
 </div>
 </div>
 </div>

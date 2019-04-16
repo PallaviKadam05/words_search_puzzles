@@ -1,25 +1,66 @@
-<h2>Change your password</h2>
+<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-heading">
+        <h2 class="text-center">Change your password
+
+</h2>
+      </div>
+      <div class="modal-body">
+
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
   <%= f.hidden_field :reset_password_token %>
 
   <div class="field">
+    <div align="middle">
     <%= f.label :password, "New password" %><br />
     <% if @minimum_password_length %>
       <em>(<%= @minimum_password_length %> characters minimum)</em><br />
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+    <%= f.password_field :password, autofocus: true, autocomplete: "new-password",class:"text" %>
   </div>
-
+</div>
   <div class="field">
+    <div align="middle">
     <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    <%= f.password_field :password_confirmation, autocomplete: "off" ,class:"text"%>
   </div>
-
+</div>
   <div class="actions">
-    <%= f.submit "Change my password" %>
+    <div align="middle">
+    <%= f.submit "Change my password" ,class:"btn"%>
   </div>
+</div>
 <% end %>
+</div>
+</div>
+</div>
+<style type="text/css">
 
-<%= render "devise/shared/links" %>
+.btn{
+  
+  color: white;
+  background: green;
+   width: 300px;
+  height: 50px;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+.text{
+   
+   width: 300px;
+  height: 50px;
+  padding: 16px;
+  font-size: 16px;
+  border: black;
+  outline: blue;
+ border-bottom: 2px solid blue;
+  border-top: 2px solid blue;
+   border-left: 2px solid blue;
+    border-right: 2px solid blue;
+}
+  
+</style>

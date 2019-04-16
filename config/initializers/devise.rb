@@ -3,12 +3,26 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
+  config.mailer_sender = 'pinkumargale1008@gmail.com'
+
+  require 'devise/orm/active_record'
+  config.case_insensitive_keys = [ :email ]
+  config.strip_whitespace_keys = [ :email ]
+  config.skip_session_storage = [:http_auth]
+  config.stretches = Rails.env.test? ? 1 : 10
+  config.reconfirmable = true
+  config.expire_all_remember_me_on_sign_out = true
+  config.password_length = 8..128
+  config.reset_password_within = 6.hours
+  config.sign_out_via = :delete
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
+  config.omniauth :google_oauth2 , "885296484455-pk3ibq0ihe0kte7b9orqq1ehb3uc5lb4.apps.googleusercontent.com", "NDYWhqND8VPnlAjFl5Y8_yIr"
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '1707f13bd5eac29b0cc38e918512f76f8487198193285ad898861aa5e313517e48bb0498e8e9e5edc27acb68a70ba0e17471243fabd4b028401ba262338112dd'
+  # config.secret_key = '2dab2c63d477a47de604675b81a11f24e51b7cdf4e10a8dca26e16582b2d8943daaae9d073cb521ff221e1b228836cda60a568522256497dc413f906893de45a'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -114,7 +128,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 11
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '743adf91e512abc2989518991879ebfcc5eaea6d5fd3360a5dfaaca15ed1d56f14b8d65a991ba1e13a1ceddc5be2ad54073633bf06a318c20e02a91463c33bab'
+  # config.pepper = '9f4a8013abd44cc7c7ad3662ff976c97778d2505a7d9b95cf14438e0fcaac7a87174e16e7feaf4c17eb3f811d7bd7c714b7b7ff3328b8c8e2d3b02ac212c0bc2'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
